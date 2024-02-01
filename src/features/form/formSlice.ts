@@ -33,7 +33,7 @@ const formSlice = createSlice({
     },
     removeProduct: (state, action: PayloadAction<ProductType>) => {
       // @ts-ignore
-      state.formData.products = state.formData.products.filter(product => product.id !== action.payload);
+      state.formData.products = state.formData.products.filter(product => product.id !== action.payload.id);
     },
   },
 });

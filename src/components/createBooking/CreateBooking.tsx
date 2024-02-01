@@ -36,9 +36,9 @@ const CreateBooking: React.FC<CreateBookingProps> = ({onBack}) => {
       </div>
       <div>
         <p>Products</p>
-        {products.map((item: ProductType) => (
+        {/* {products.map((item: ProductType) => (
           <Product product={item} />
-        ))}
+        ))} */}
       </div>
       <Button onClick={onBack}>Back</Button>
       <Button onClick={handleSubmit}>Create Booking</Button>
