@@ -1,27 +1,28 @@
 import {RoomType} from "../../utils/types";
 import "./room.scss";
-import classNames from "classnames";
-import {RootState} from "../../app/store";
-import {useAppSelector} from "../../app/hooks";
 
 interface RoomProps {
   room: RoomType;
   price: number;
+  isSelected: boolean;
   onSelect: (room: RoomType) => void;
 }
 
-const Room: React.FC<RoomProps> = ({price, room, onSelect}) => {
-  const selectedRoom: RoomType | null = useAppSelector((state: RootState) => state.form.formData.room);
+const Room: React.FC<RoomProps> = ({price, room, isSelected, onSelect}) => {
   const handleClick = () => {
     onSelect(room);
   };
 
-  const roomClasses = classNames("room");
   return (
-    <div className={roomClasses} onClick={handleClick}>
-      <img src={room.image} alt="room-image" />
-      <p>{room.name}</p>
-      <p>{price}</p>
+    <div className="room" onClick={handleClick}>
+      <div className="details">
+        <img src={room.image} alt="room-image" />
+        <p className="name">{room.name}</p>
+        <p className="price">{price}</p>
+      </div>
+      <div className="checkbox-container">
+        <input type="checkbox" checked={isSelected} readOnly />
+      </div>
     </div>
   );
 };
