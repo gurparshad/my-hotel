@@ -1,0 +1,19 @@
+.datePickerContainer {
+  display: flex;
+  gap: 20px;
+  position: relative;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.datePicker {
+  width: 200px;
+  border-radius: 4px;
+  height: 30px;
+  border: 1px solid #ccc;
+}
+
+.react-datepicker__tab-loop {
+  position: absolute;
+  top: 0;
+}
