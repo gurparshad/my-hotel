@@ -1,0 +1,29 @@
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 2px solid #007bff;
+  color: #007bff;
+  background-color: #fff;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  height: 45px;
+
+  &.disconnect {
+    color: #e74c3c;
+    border-color: #e74c3c;
+    &:hover {
+      background-color: #e74c3c;
+      color: #fff;
+    }
+  }
+
+  &:hover {
+    background-color: #007bff;
+    color: #fff;
+  }
+}

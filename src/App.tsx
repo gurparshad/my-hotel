@@ -1,26 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import {BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
+import Home from "./pages/home/Home";
+import Success from "./pages/success/Success";
+import {ReactElement} from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+interface ProtectedRouteProps {
+  element: ReactElement;
 }
+
+const App = () => {
+  const ProtectedRoute: React.FC<ProtectedRouteProps> = ({element}) => {
+    // get boolean from cookies or some where else to enable this route.
+    // in place of true put some dynamic value.
+    return true ? element : <Navigate to="/" replace />;
+  };
+
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/success" element={<ProtectedRoute element={<Success />} />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+    </Router>
+  );
+};
 
 export default App;
