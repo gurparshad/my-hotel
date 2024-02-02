@@ -12,8 +12,13 @@ interface DateAndTimeProps {
 
 const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
   const dispatch = useAppDispatch();
-  const startDate = useAppSelector((state: RootState) => state.form.formData.startDate);
-  const endDate = useAppSelector((state: RootState) => state.form.formData.endDate);
+  const startDate = useAppSelector((state: RootState) => state.form.form.formData.startDate);
+
+  const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
+
+  const endDate = useAppSelector((state: RootState) => state.form.form.formData.endDate);
+
+  const endDateFormatted = endDate ? (typeof endDate === "string" ? new Date(endDate) : endDate) : null;
 
   // TODO: We have to handle time as well.
   // const [startTime, setStartTime] = useState("");
@@ -29,12 +34,9 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
   };
 
   const handleStartDateChange = (date: Date) => {
-    // Check if the new start date is after the current end date
-    if (endDate && date > endDate) {
-      // If so, reset the end date to null
+    if (endDateFormatted && date > endDateFormatted) {
       dispatch(setEndDate(null));
     }
-    // Update the start date
     dispatch(setStartDate(date));
   };
 
@@ -50,28 +52,26 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
           <div className="startDateContainer">
             <label>Start Date</label>
             <DatePicker
-              selected={startDate}
-              onChange={(date: any) => handleStartDateChange(date)}
+              selected={startDateFormatted}
+              onChange={(date: Date) => handleStartDateChange(date)}
               selectsStart
-              startDate={startDate}
-              endDate={endDate}
+              startDate={startDateFormatted}
+              endDate={endDateFormatted}
               dateFormat="MM/dd/yyyy"
               className="datePicker"
-              // placeholderText="Check in"
             />
           </div>
           <div className="endDateContainer">
             <label>End Date</label>
             <DatePicker
-              selected={endDate}
+              selected={endDateFormatted}
               onChange={(date: any) => handleEndDateChange(date)}
               selectsEnd
-              startDate={startDate}
-              endDate={endDate}
-              minDate={startDate}
+              startDate={startDateFormatted}
+              endDate={endDateFormatted}
+              minDate={startDateFormatted}
               dateFormat="MM/dd/yyyy"
               className="datePicker"
-              // placeholderText="Check out"
             />
           </div>
         </div>

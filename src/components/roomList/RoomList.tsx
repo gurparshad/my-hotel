@@ -18,7 +18,7 @@ interface RoomListProps {
 const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
   const dispatch = useAppDispatch();
 
-  const selectedRoom: RoomType | null = useAppSelector((state: RootState) => state.form.formData.room);
+  const selectedRoom: RoomType | null = useAppSelector((state: RootState) => state.form.form.formData.room);
 
   const handleRoomSelect = (room: RoomType) => {
     console.log("in parent room", room);

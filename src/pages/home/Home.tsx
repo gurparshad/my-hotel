@@ -9,7 +9,7 @@ import ProgressBar from "../../components/progressBar/ProgressBar";
 import "./home.scss";
 
 const Home = () => {
-  const currentStep = useAppSelector((state: RootState) => state.form.currentStep);
+  const currentStep = useAppSelector((state: RootState) => state.form.form.currentStep);
   const dispatch = useAppDispatch();
 
   const handleNext = () => {

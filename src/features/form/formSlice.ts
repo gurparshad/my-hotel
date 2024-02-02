@@ -1,7 +1,19 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProductType } from '../../utils/types';
+import { ProductType, RoomType } from '../../utils/types';
 
-const initialState = {
+interface FormData {
+  startDate: Date | null;
+  endDate: Date | null;
+  room: RoomType | null;
+  products: ProductType[];
+}
+
+interface RootState {
+  currentStep: number;
+  formData: FormData;
+}
+
+const initialState: RootState = {
   currentStep: 1,
   formData: {
     startDate: null,
@@ -19,6 +31,8 @@ const formSlice = createSlice({
       state.currentStep = action.payload;
     },
     setStartDate: (state, action) => {
+      console.log("in slice -->", action.payload)
+      console.log("in slicetype -->", typeof (action.payload))
       state.formData.startDate = action.payload;
     },
     setEndDate: (state, action) => {

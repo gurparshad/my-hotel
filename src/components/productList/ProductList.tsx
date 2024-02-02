@@ -17,7 +17,7 @@ const ProductList: React.FC<ProductListProps> = ({onNext, onBack}) => {
   const dispatch = useAppDispatch();
 
   const selectedProductIds = useAppSelector((state: RootState) =>
-    state.form.formData.products.map((product: ProductType) => product.id)
+    state.form.form.formData.products.map((product: ProductType) => product.id)
   );
 
   const handleCardClick = (product: ProductType) => {

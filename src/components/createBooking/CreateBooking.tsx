@@ -15,7 +15,7 @@ const CreateBooking: React.FC<CreateBookingProps> = ({onBack}) => {
   const handleSubmit = () => {
     navigate("/success");
   };
-  const formData = useAppSelector((state: RootState) => state.form.formData);
+  const formData = useAppSelector((state: RootState) => state.form.form.formData);
   console.log("formData-->>", formData);
   const {startDate, endDate, room, products} = formData;
   return (
