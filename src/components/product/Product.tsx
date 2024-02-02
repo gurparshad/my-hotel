@@ -1,4 +1,6 @@
 import {lazy, Suspense} from "react";
+import {useAppSelector} from "../../app/hooks";
+import {RootState} from "../../app/store";
 import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
 import {ProductType} from "../../utils/types";
 import "./product.scss";

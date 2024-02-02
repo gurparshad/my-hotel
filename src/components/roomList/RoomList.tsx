@@ -9,6 +9,7 @@ import Room from "../room/Room";
 import data from "../../data/data.json";
 
 const rooms = data.rooms.data;
+const bookings = data.bookings.data;
 
 interface RoomListProps {
   onNext: () => void;
@@ -20,8 +21,45 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
 
   const selectedRoom: RoomType | null = useAppSelector((state: RootState) => state.form.form.formData.room);
 
+  const startDate = useAppSelector((state: RootState) => state.form.form.formData.startDate);
+
+  const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
+
+  const endDate = useAppSelector((state: RootState) => state.form.form.formData.endDate);
+
+  const endDateFormatted = endDate ? (typeof endDate === "string" ? new Date(endDate) : endDate) : null;
+
+  const checkRoomAvailability = (roomId: number) => {
+    const selectedStartUtc = startDateFormatted?.toISOString();
+    const selectedEndUtc = endDateFormatted?.toISOString();
+
+    for (const booking of bookings) {
+      const bookingStartDate = new Date(booking.startDateUtc);
+      const bookingEndDate = new Date(booking.endDateUtc);
+
+      if (
+        booking.roomId === roomId &&
+        // @ts-ignore
+        ((selectedStartUtc < bookingEndDate.toISOString() && selectedStartUtc > bookingStartDate.toISOString()) ||
+          // @ts-ignore
+          (selectedEndUtc < bookingEndDate.toISOString() && selectedEndUtc > bookingStartDate.toISOString()))
+      ) {
+        return false;
+      }
+    }
+
+    return true;
+  };
+
   const handleRoomSelect = (room: RoomType) => {
-    console.log("in parent room", room);
+    // const roomData = {
+    //   id: room.id,
+    //   image: room.image,
+    //   name: room.name,
+    //   pricePerNight: room.pricePerNightNet,
+    //   priceTaxPercentage: room.priceTaxPercentage,
+    //   discountedPrice:
+    // }
     dispatch(setRoom(room));
   };
 
@@ -42,6 +80,7 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
           onSelect={handleRoomSelect}
           // @ts-ignore
           isSelected={selectedRoom ? selectedRoom.id === room.id : false}
+          isAvailable={checkRoomAvailability(room.id)}
         />
       ))}
       <Button onClick={onBack}>Back</Button>
