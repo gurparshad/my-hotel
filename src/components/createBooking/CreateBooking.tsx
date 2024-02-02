@@ -1,6 +1,7 @@
 import {Link, useNavigate} from "react-router-dom";
-import {useAppSelector} from "../../app/hooks";
-import {RootState} from "../../app/store";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {persistor, RootState} from "../../app/store";
+import {resetForm} from "../../features/form/formSlice";
 import {ProductType} from "../../utils/types";
 import Button from "../button/Button";
 import Product from "../product/Product";
@@ -11,12 +12,14 @@ interface CreateBookingProps {
 }
 
 const CreateBooking: React.FC<CreateBookingProps> = ({onBack}) => {
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleSubmit = () => {
+    // persistor.purge(["form"]);
+    dispatch(resetForm());
     navigate("/success");
   };
   const formData = useAppSelector((state: RootState) => state.form.form.formData);
-  console.log("formData-->>", formData);
   const {startDate, endDate, room, products} = formData;
   return (
     <div>

@@ -49,9 +49,12 @@ const formSlice = createSlice({
       // @ts-ignore
       state.formData.products = state.formData.products.filter(product => product.id !== action.payload.id);
     },
+    resetForm: (state) => {
+      return initialState;
+    },
   },
 });
 
-export const { setCurrentStep, setStartDate, setEndDate, setRoom, addProduct, removeProduct } = formSlice.actions;
+export const { setCurrentStep, setStartDate, setEndDate, setRoom, addProduct, removeProduct, resetForm } = formSlice.actions;
 
 export default formSlice.reducer;
