@@ -2,11 +2,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {RootState} from "../../app/store";
-import {addProduct, removeProduct, setEndDate, setStartDate, updateRoom} from "../../features/form/formSlice";
+import {updateProduct, setEndDate, setStartDate, updateRoom} from "../../features/form/formSlice";
 import {calculateDiscountedPrice} from "../../utils/calculateDiscountedPrice";
 import {calculateNumberOfNights} from "../../utils/calculateNumberOfNights";
+import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
 import {calculateTotalPrice} from "../../utils/calculateTotalPrice";
-import {SelectedRoom} from "../../utils/types";
+import {SelectedProduct, SelectedRoom} from "../../utils/types";
 import Button from "../button/Button";
 import "./dateAndTime.scss";
 
@@ -40,6 +41,10 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
 
   const selectedRoom: SelectedRoom | null = useAppSelector((state: RootState) => state.form.form.formData.room);
 
+  const selectedProducts: SelectedProduct[] | [] = useAppSelector(
+    (state: RootState) => state.form.form.formData.products
+  );
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
     if (startDate && endDate) {
@@ -68,9 +73,42 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
       // @ts-ignore
       dispatch(updateRoom(updatedRoom));
 
-      if (numberOfNights >= 28) {
-        dispatch(addProduct(productData));
+      // update products
+      // get selected products loop through it and add the updated data.
+
+      for (const selectedProduct of selectedProducts) {
+        let updatedProduct;
+        if (selectedProduct.id === 1 && numberOfNights >= 28) {
+          updatedProduct = {
+            ...selectedProduct,
+            numberOfNights: numberOfNights,
+            totalPrice: 0,
+          };
+        } else if (selectedProduct.id === 3) {
+          updatedProduct = {
+            ...selectedProduct,
+            numberOfNights: numberOfNights,
+            totalPrice: calculatePerNightPrice(selectedProduct.priceNet, selectedProduct.priceTaxPercentage),
+          };
+        } else {
+          updatedProduct = {
+            ...selectedProduct,
+            numberOfNights: numberOfNights,
+            totalPrice: calculateTotalPrice(
+              numberOfNights,
+              selectedProduct?.priceNet,
+              selectedProduct?.priceTaxPercentage
+            ),
+          };
+        }
+
+        dispatch(updateProduct(updatedProduct));
       }
+
+      // breakfast updated.
+      // if (numberOfNights >= 28) {
+      //   dispatch(addProduct(productData));
+      // }
       onNext();
     } else {
       alert("Please select both start and end dates.");
@@ -80,16 +118,12 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
   const handleStartDateChange = (date: Date) => {
     if (endDateFormatted && date > endDateFormatted) {
       dispatch(setEndDate(null));
-      // TODO: maybe we should use update product.
-      dispatch(removeProduct(productData));
     }
     dispatch(setStartDate(date));
-    dispatch(removeProduct(productData));
   };
 
   const handleEndDateChange = (date: any) => {
     dispatch(setEndDate(date));
-    dispatch(removeProduct(productData));
   };
 
   return (

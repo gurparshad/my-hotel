@@ -47,6 +47,18 @@ const formSlice = createSlice({
       // @ts-ignore
       state.formData.products = state.formData.products.filter(product => product.id !== action.payload.id);
     },
+    updateProduct: (state, action: PayloadAction<SelectedProduct>) => {
+      const { id } = action.payload;
+      const updatedProducts = state.formData.products.map(product => {
+        if (product.id === id) {
+          return {
+            ...action.payload
+          };
+        }
+        return product; // Return unchanged product if it's not the one to update
+      });
+      state.formData.products = updatedProducts;
+    },
     updateRoom: (state, action: PayloadAction<SelectedRoom>) => {
       if (state.formData.room) {
         state.formData.room = { ...state.formData.room, ...action.payload };
@@ -58,6 +70,6 @@ const formSlice = createSlice({
   },
 });
 
-export const { setCurrentStep, setStartDate, setEndDate, setRoom, updateRoom, addProduct, removeProduct, resetForm } = formSlice.actions;
+export const { setCurrentStep, setStartDate, setEndDate, setRoom, updateRoom, addProduct, removeProduct, updateProduct, resetForm } = formSlice.actions;
 
 export default formSlice.reducer;
