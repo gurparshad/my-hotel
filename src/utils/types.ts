@@ -29,3 +29,25 @@ export interface Property {
   startTimesLocal: string[];
   endTimesLocal: string[];
 }
+
+export interface SelectedRoom {
+  id: number;
+  image: string;
+  name: string;
+  pricePerNight: number;
+  priceTaxPercentage: number;
+  discountedPrice: number;
+  numberOfNights: number;
+  totalPrice: number;
+}
+
+export interface SelectedProduct {
+  id: number;
+  image: string;
+  name: string;
+  priceNet: number;
+  priceTaxPercentage: number;
+  numberOfNights: number;
+  totalPrice: number;
+  chargeMethod: string;
+}

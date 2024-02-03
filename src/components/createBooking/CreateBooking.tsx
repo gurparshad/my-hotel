@@ -1,12 +1,9 @@
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {persistor, RootState} from "../../app/store";
+import {RootState} from "../../app/store";
 import {resetForm} from "../../features/form/formSlice";
-import {ProductType} from "../../utils/types";
+import {SelectedProduct} from "../../utils/types";
 import Button from "../button/Button";
-import Product from "../product/Product";
-import Room from "../room/Room";
-
 interface CreateBookingProps {
   onBack: () => void;
 }
@@ -21,6 +18,7 @@ const CreateBooking: React.FC<CreateBookingProps> = ({onBack}) => {
   };
   const formData = useAppSelector((state: RootState) => state.form.form.formData);
   const {startDate, endDate, room, products} = formData;
+  console.log("room-->>", room);
   return (
     <div>
       <h2>Create Booking</h2>
@@ -33,15 +31,25 @@ const CreateBooking: React.FC<CreateBookingProps> = ({onBack}) => {
         {/* @ts-ignore */}
         <p>End Date: {endDate.toString()}</p>
       </div>
-      <div>
+      <div style={{border: "1px solid red"}}>
         <p>Room details</p>
-        {/* <Room /> */}
+        <div>
+          <img src={room?.image} alt="room-image" />
+          <p>Name:{room?.name}</p>
+          <p>Price per night:{room?.pricePerNight}</p>
+          <p>Number of nights: {room?.numberOfNights}</p>
+          <p>Total Price: {room?.totalPrice}</p>
+          {room?.discountedPrice !== 0 && <p>Discounted Price{room?.discountedPrice}</p>}
+        </div>
       </div>
       <div>
         <p>Products</p>
-        {/* {products.map((item: ProductType) => (
-          <Product product={item} />
-        ))} */}
+        {products.map((item: SelectedProduct) => (
+          <div style={{border: "1px solid green"}}>
+            <p>{item.name}</p>
+            <p>{item.totalPrice}</p>
+          </div>
+        ))}
       </div>
       <Button onClick={onBack}>Back</Button>
       <Button onClick={handleSubmit}>Create Booking</Button>

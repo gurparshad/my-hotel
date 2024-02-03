@@ -1,11 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProductType, RoomType } from '../../utils/types';
+import { ProductType, SelectedProduct, SelectedRoom } from '../../utils/types';
 
 interface FormData {
   startDate: Date | null;
   endDate: Date | null;
-  room: RoomType | null;
-  products: ProductType[];
+  room: SelectedRoom | null;
+  products: SelectedProduct[];
 }
 
 interface RootState {
@@ -31,8 +31,6 @@ const formSlice = createSlice({
       state.currentStep = action.payload;
     },
     setStartDate: (state, action) => {
-      console.log("in slice -->", action.payload)
-      console.log("in slicetype -->", typeof (action.payload))
       state.formData.startDate = action.payload;
     },
     setEndDate: (state, action) => {
@@ -49,12 +47,17 @@ const formSlice = createSlice({
       // @ts-ignore
       state.formData.products = state.formData.products.filter(product => product.id !== action.payload.id);
     },
+    updateRoom: (state, action: PayloadAction<SelectedRoom>) => {
+      if (state.formData.room) {
+        state.formData.room = { ...state.formData.room, ...action.payload };
+      }
+    },
     resetForm: (state) => {
       return initialState;
     },
   },
 });
 
-export const { setCurrentStep, setStartDate, setEndDate, setRoom, addProduct, removeProduct, resetForm } = formSlice.actions;
+export const { setCurrentStep, setStartDate, setEndDate, setRoom, updateRoom, addProduct, removeProduct, resetForm } = formSlice.actions;
 
 export default formSlice.reducer;

@@ -1,6 +1,4 @@
 import {lazy, Suspense} from "react";
-import {useAppSelector} from "../../app/hooks";
-import {RootState} from "../../app/store";
 import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
 import {ProductType} from "../../utils/types";
 import "./product.scss";
@@ -9,9 +7,10 @@ interface ProductProps {
   product: ProductType;
   isSelected: boolean;
   onCardClick: any;
+  isFree: boolean;
 }
 
-const Product: React.FC<ProductProps> = ({product, isSelected, onCardClick}) => {
+const Product: React.FC<ProductProps> = ({product, isSelected, onCardClick, isFree}) => {
   const {name, image, priceNet, priceTaxPercentage, chargeMethod} = product;
   const LazyImage = lazy(() => import("../lazyImage/LazyImage"));
 
@@ -22,12 +21,22 @@ const Product: React.FC<ProductProps> = ({product, isSelected, onCardClick}) => 
         <Suspense fallback={<div>Loading...</div>}>
           <LazyImage src={product.image} alt="product-image" />
         </Suspense>
-        <p className="price">${calculatePerNightPrice(priceNet, priceTaxPercentage)}</p>
-        <p className="chargeMethod">Charge - {chargeMethod}</p>
+        {isFree ? (
+          <p>Free</p>
+        ) : (
+          <div>
+            <p className="price">${calculatePerNightPrice(priceNet, priceTaxPercentage)}</p>
+            <p className="chargeMethod">Charge - {chargeMethod}</p>
+          </div>
+        )}
       </div>
-      <div className="checkbox-container">
-        <input type="checkbox" checked={isSelected} readOnly />
-      </div>
+      {isFree ? (
+        <p>Included</p>
+      ) : (
+        <div className="checkbox-container">
+          <input type="checkbox" checked={isSelected} readOnly />
+        </div>
+      )}
     </div>
   );
 };

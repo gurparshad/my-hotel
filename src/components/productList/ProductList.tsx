@@ -6,6 +6,9 @@ import data from "../../data/data.json";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {RootState} from "../../app/store";
 import {addProduct, removeProduct} from "../../features/form/formSlice";
+import {calculateNumberOfNights} from "../../utils/calculateNumberOfNights";
+import {calculateTotalPrice} from "../../utils/calculateTotalPrice";
+import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
 
 interface ProductListProps {
   onNext: () => void;
@@ -16,22 +19,49 @@ const ProductList: React.FC<ProductListProps> = ({onNext, onBack}) => {
   const products = data.products.data;
   const dispatch = useAppDispatch();
 
+  const startDate = useAppSelector((state: RootState) => state.form.form.formData.startDate);
+  const endDate = useAppSelector((state: RootState) => state.form.form.formData.endDate);
+  // @ts-ignore
+  const numberOfNights = calculateNumberOfNights(startDate, endDate);
+
   const selectedProductIds = useAppSelector((state: RootState) =>
     state.form.form.formData.products.map((product: ProductType) => product.id)
   );
 
-  const handleCardClick = (product: ProductType) => {
-    if (selectedProductIds.includes(product.id)) {
-      dispatch(removeProduct(product));
+  const handleTotalPrice = (productId: number, netPrice: number, tax: number) => {
+    if (productId === 3) {
+      return calculatePerNightPrice(netPrice, tax);
     } else {
-      dispatch(addProduct(product));
+      return calculateTotalPrice(numberOfNights, netPrice, tax);
+    }
+  };
+
+  const handleCardClick = (product: ProductType) => {
+    const productData = {
+      id: product.id,
+      name: product.name,
+      priceNet: product.priceNet,
+      priceTaxPercentage: product.priceTaxPercentage,
+      chargeMethod: product.chargeMethod,
+      image: product.image,
+      totalPrice: handleTotalPrice(product.id, product.priceNet, product.priceTaxPercentage),
+    };
+    if (selectedProductIds.includes(product.id)) {
+      dispatch(removeProduct(productData));
+    } else {
+      dispatch(addProduct(productData));
     }
   };
 
   return (
     <div>
       {products.map((product: ProductType) => (
-        <Product product={product} isSelected={selectedProductIds.includes(product.id)} onCardClick={handleCardClick} />
+        <Product
+          product={product}
+          isSelected={selectedProductIds.includes(product.id)}
+          onCardClick={handleCardClick}
+          isFree={numberOfNights >= 28 && product.id === 1}
+        />
       ))}
       <Button onClick={onBack}>Back</Button>
       <Button onClick={onNext}>Next</Button>
