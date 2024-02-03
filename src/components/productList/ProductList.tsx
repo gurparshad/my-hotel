@@ -9,6 +9,7 @@ import {addProduct, removeProduct} from "../../features/form/formSlice";
 import {calculateNumberOfNights} from "../../utils/calculateNumberOfNights";
 import {calculateTotalPrice} from "../../utils/calculateTotalPrice";
 import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
+import "./productList.scss";
 
 interface ProductListProps {
   onNext: () => void;
@@ -54,17 +55,21 @@ const ProductList: React.FC<ProductListProps> = ({onNext, onBack}) => {
   };
 
   return (
-    <div>
-      {products.map((product: ProductType) => (
-        <Product
-          product={product}
-          isSelected={selectedProductIds.includes(product.id)}
-          onCardClick={handleCardClick}
-          isFree={numberOfNights >= 28 && product.id === 1}
-        />
-      ))}
-      <Button onClick={onBack}>Back</Button>
-      <Button onClick={onNext}>Next</Button>
+    <div className="productList">
+      <div className="products">
+        {products.map((product: ProductType) => (
+          <Product
+            product={product}
+            isSelected={selectedProductIds.includes(product.id)}
+            onCardClick={handleCardClick}
+            isFree={numberOfNights >= 28 && product.id === 1}
+          />
+        ))}
+      </div>
+      <div>
+        <Button onClick={onBack}>Back</Button>
+        <Button onClick={onNext}>Next</Button>
+      </div>
     </div>
   );
 };

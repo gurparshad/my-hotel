@@ -10,7 +10,7 @@ import data from "../../data/data.json";
 import {calculateTotalPrice} from "../../utils/calculateTotalPrice";
 import {calculateDiscountedPrice} from "../../utils/calculateDiscountedPrice";
 import {calculateNumberOfNights} from "../../utils/calculateNumberOfNights";
-import {useEffect} from "react";
+import "./roomList.scss";
 
 const rooms = data.rooms.data;
 const bookings = data.bookings.data;
@@ -97,21 +97,25 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
   };
 
   return (
-    <div>
-      {rooms.map((room: RoomType) => (
-        <Room
-          room={room}
-          perNightPrice={calculatePerNightPrice(room.pricePerNightNet, room.priceTaxPercentage)}
-          onSelect={handleRoomSelect}
-          // @ts-ignore
-          isSelected={selectedRoom ? selectedRoom.id === room.id : false}
-          isAvailable={checkRoomAvailability(room.id)}
-          discountedPrice={handleDiscountedPrice(room)}
-          totalPrice={handleTotalPrice(room)}
-        />
-      ))}
-      <Button onClick={onBack}>Back</Button>
-      <Button onClick={handleSubmit}>Next</Button>
+    <div className="roomList">
+      <div className="rooms">
+        {rooms.map((room: RoomType) => (
+          <Room
+            room={room}
+            perNightPrice={calculatePerNightPrice(room.pricePerNightNet, room.priceTaxPercentage)}
+            onSelect={handleRoomSelect}
+            // @ts-ignore
+            isSelected={selectedRoom ? selectedRoom.id === room.id : false}
+            isAvailable={checkRoomAvailability(room.id)}
+            discountedPrice={handleDiscountedPrice(room)}
+            totalPrice={handleTotalPrice(room)}
+          />
+        ))}
+      </div>
+      <div>
+        <Button onClick={onBack}>Back</Button>
+        <Button onClick={handleSubmit}>Next</Button>
+      </div>
     </div>
   );
 };
