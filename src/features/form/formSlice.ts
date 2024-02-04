@@ -4,6 +4,8 @@ import { ProductType, SelectedProduct, SelectedRoom } from '../../utils/types';
 interface FormData {
   startDate: Date | null;
   endDate: Date | null;
+  startTime: string | null;
+  endTime: string | null;
   room: SelectedRoom | null;
   products: SelectedProduct[];
 }
@@ -18,6 +20,8 @@ const initialState: RootState = {
   formData: {
     startDate: null,
     endDate: null,
+    startTime: null,
+    endTime: null,
     room: null,
     products: [],
   },
@@ -35,6 +39,12 @@ const formSlice = createSlice({
     },
     setEndDate: (state, action) => {
       state.formData.endDate = action.payload;
+    },
+    setStartTime: (state, action) => {
+      state.formData.startTime = action.payload;
+    },
+    setEndTime: (state, action) => {
+      state.formData.endTime = action.payload;
     },
     setRoom: (state, action) => {
       state.formData.room = action.payload;
@@ -55,7 +65,7 @@ const formSlice = createSlice({
             ...action.payload
           };
         }
-        return product; // Return unchanged product if it's not the one to update
+        return product;
       });
       state.formData.products = updatedProducts;
     },
@@ -70,6 +80,6 @@ const formSlice = createSlice({
   },
 });
 
-export const { setCurrentStep, setStartDate, setEndDate, setRoom, updateRoom, addProduct, removeProduct, updateProduct, resetForm } = formSlice.actions;
+export const { setCurrentStep, setStartDate, setEndDate, setStartTime, setEndTime, setRoom, updateRoom, addProduct, removeProduct, updateProduct, resetForm } = formSlice.actions;
 
 export default formSlice.reducer;

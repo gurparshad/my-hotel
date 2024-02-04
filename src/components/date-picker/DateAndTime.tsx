@@ -1,15 +1,23 @@
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
 import {RootState} from "../../app/store";
-import {updateProduct, setEndDate, setStartDate, updateRoom} from "../../features/form/formSlice";
+import {
+  updateProduct,
+  setEndDate,
+  setStartDate,
+  updateRoom,
+  setStartTime,
+  setEndTime,
+} from "../../features/form/formSlice";
 import {calculateDiscountedPrice} from "../../utils/calculateDiscountedPrice";
 import {calculateNumberOfNights} from "../../utils/calculateNumberOfNights";
 import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
 import {calculateTotalPrice} from "../../utils/calculateTotalPrice";
 import {SelectedProduct, SelectedRoom} from "../../utils/types";
 import Button from "../button/Button";
-import "./dateAndTime.scss";
+import TimeDropdown from "../timeDropdown/TimeDropdown";
+import "react-datepicker/dist/react-datepicker.css";
+import {useState} from "react";
 
 interface DateAndTimeProps {
   onNext: () => void;
@@ -17,27 +25,12 @@ interface DateAndTimeProps {
 
 const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
   const dispatch = useAppDispatch();
+  const [errors, setErrors] = useState<string[]>([]);
+
   const startDate = useAppSelector((state: RootState) => state.form.form.formData.startDate);
-
-  const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
-
   const endDate = useAppSelector((state: RootState) => state.form.form.formData.endDate);
-
-  const endDateFormatted = endDate ? (typeof endDate === "string" ? new Date(endDate) : endDate) : null;
-
-  // TODO: We have to handle time as well.
-  // const [startTime, setStartTime] = useState("");
-  // const [endTime, setEndTime] = useState("");
-
-  const productData = {
-    id: 1,
-    name: "Breakfast",
-    priceNet: 6,
-    priceTaxPercentage: 0.09,
-    chargeMethod: "nightly",
-    image: "https://via.placeholder.com/400x200.png?text=Breakfast",
-    totalPrice: 0,
-  };
+  const startTime = useAppSelector((state: RootState) => state.form.form.formData.startTime);
+  const endTime = useAppSelector((state: RootState) => state.form.form.formData.endTime);
 
   const selectedRoom: SelectedRoom | null = useAppSelector((state: RootState) => state.form.form.formData.room);
 
@@ -45,8 +38,47 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
     (state: RootState) => state.form.form.formData.products
   );
 
+  // put these methods as helper method for date formatting.
+  const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
+  const endDateFormatted = endDate ? (typeof endDate === "string" ? new Date(endDate) : endDate) : null;
+
+  // get these from teh json file.
+  const startTimes = ["12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
+  const endTimes = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00"];
+
+  const handleStartTime = (selectedTime: string) => {
+    dispatch(setStartTime(selectedTime));
+  };
+
+  const handleEndTime = (selectedTime: string) => {
+    dispatch(setEndTime(selectedTime));
+  };
+
+  const handleStartDateChange = (date: Date) => {
+    if (endDateFormatted && date > endDateFormatted) {
+      dispatch(setEndDate(null));
+    }
+    dispatch(setStartDate(date));
+  };
+
+  const handleEndDateChange = (date: any) => {
+    dispatch(setEndDate(date));
+  };
+
   const handleSubmit = (e: any) => {
     e.preventDefault();
+    const newErrors: string[] = [];
+
+    if (!startDate) newErrors.push("startDate");
+    if (!endDate) newErrors.push("endDate");
+    if (!startTime) newErrors.push("startTime");
+    if (!endTime) newErrors.push("endTime");
+
+    if (newErrors.length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
     if (startDate && endDate) {
       const numberOfNights = calculateNumberOfNights(startDate, endDate);
       let updatedRoom;
@@ -73,9 +105,6 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
       // @ts-ignore
       dispatch(updateRoom(updatedRoom));
 
-      // update products
-      // get selected products loop through it and add the updated data.
-
       for (const selectedProduct of selectedProducts) {
         let updatedProduct;
         if (selectedProduct.id === 1 && numberOfNights >= 28) {
@@ -101,36 +130,23 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
             ),
           };
         }
-
         dispatch(updateProduct(updatedProduct));
       }
 
-      // breakfast updated.
-      // if (numberOfNights >= 28) {
-      //   dispatch(addProduct(productData));
-      // }
       onNext();
     } else {
       alert("Please select both start and end dates.");
     }
   };
 
-  const handleStartDateChange = (date: Date) => {
-    if (endDateFormatted && date > endDateFormatted) {
-      dispatch(setEndDate(null));
-    }
-    dispatch(setStartDate(date));
-  };
-
-  const handleEndDateChange = (date: any) => {
-    dispatch(setEndDate(date));
-  };
-
   return (
     <>
       <form onSubmit={handleSubmit}>
         <h2>Select the Booking dates</h2>
-        <div className="datePickerContainer">
+        <div
+          className="datePickerContainer"
+          style={{display: "flex", justifyContent: "center", alignItems: "baseline"}}
+        >
           <div className="startDateContainer">
             <label>Start Date</label>
             <DatePicker
@@ -142,6 +158,16 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
               dateFormat="MM/dd/yyyy"
               className="datePicker"
             />
+            {errors.includes("startDate") && <p style={{color: "red"}}>Please select a start date.</p>}
+          </div>
+          <div>
+            <p>Select checkin Time</p>
+            <TimeDropdown
+              value={startTime ?? ""}
+              times={startTimes}
+              onChange={(time: string) => handleStartTime(time)}
+            />
+            {errors.includes("startTime") && <p style={{color: "red"}}>Please select a check-in time.</p>}
           </div>
           <div className="endDateContainer">
             <label>End Date</label>
@@ -155,6 +181,12 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
               dateFormat="MM/dd/yyyy"
               className="datePicker"
             />
+            {errors.includes("endDate") && <p style={{color: "red"}}>Please select an end date.</p>}
+          </div>
+          <div>
+            <p>Select checkout Time</p>
+            <TimeDropdown value={endTime ?? ""} times={endTimes} onChange={(time: string) => handleEndTime(time)} />
+            {errors.includes("endTime") && <p style={{color: "red"}}>Please select a checkout time.</p>}
           </div>
         </div>
         <Button onClick={handleSubmit} type="submit">
