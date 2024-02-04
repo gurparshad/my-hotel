@@ -43,3 +43,15 @@
     text-decoration: line-through;
   }
 }
+
+.disabled-room {
+  background-color: #f2f2f2;
+}
+
+.disabled-room:hover {
+  transform: none;
+}
+
+.selected-room {
+  background-color: #9ae4f3;
+}

@@ -28,7 +28,7 @@ const CreateBooking: React.FC<CreateBookingProps> = ({onBack}) => {
       return accumulator + product.totalPrice;
     }, 0);
     // @ts-ignore
-    return roomPrice + totalProductPrices;
+    return Number((roomPrice + totalProductPrices).toFixed(2));
   };
 
   const handleSubmit = async () => {

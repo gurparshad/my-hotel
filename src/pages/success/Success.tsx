@@ -29,7 +29,7 @@ const Success = () => {
       return accumulator + product.totalPrice;
     }, 0);
     // @ts-ignore
-    return roomPrice + totalProductPrices;
+    return Number((roomPrice + totalProductPrices).toFixed(2));
   };
 
   return (

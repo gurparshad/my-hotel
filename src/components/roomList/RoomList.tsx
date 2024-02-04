@@ -9,9 +9,8 @@ import {RootState} from "../../app/store";
 import Button from "../button/Button";
 import data from "../../data/data.json";
 import Room from "../room/Room";
-
-import "./roomList.scss";
 import {useState} from "react";
+import "./roomList.scss";
 
 const rooms = data.rooms.data;
 const bookings = data.bookings.data;
@@ -47,9 +46,9 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
       if (
         booking.roomId === roomId &&
         // @ts-ignore
-        ((selectedStartUtc < bookingEndDate.toISOString() && selectedStartUtc > bookingStartDate.toISOString()) ||
+        ((selectedStartUtc <= bookingEndDate.toISOString() && selectedStartUtc >= bookingStartDate.toISOString()) ||
           // @ts-ignore
-          (selectedEndUtc < bookingEndDate.toISOString() && selectedEndUtc > bookingStartDate.toISOString()))
+          (selectedEndUtc <= bookingEndDate.toISOString() && selectedEndUtc >= bookingStartDate.toISOString()))
       ) {
         return false;
       }

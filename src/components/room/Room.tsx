@@ -28,12 +28,17 @@ const Room: React.FC<RoomProps> = ({
     strike: discountedPrice !== 0,
   });
 
+  const roomClasses = classnames("room", {
+    "disabled-room": !isAvailable,
+    "selected-room": isSelected,
+  });
+
   const handleClick = () => {
     onSelect(room);
   };
 
   return (
-    <div className="room" onClick={handleClick}>
+    <div className={roomClasses} onClick={isAvailable ? handleClick : undefined}>
       <div className="details">
         <Suspense fallback={<div>Loading...</div>}>
           <LazyImage src={room.image} alt="room-image" />

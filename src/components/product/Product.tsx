@@ -1,3 +1,4 @@
+import classnames from "classnames";
 import {lazy, Suspense} from "react";
 import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
 import {ProductType} from "../../utils/types";
@@ -13,9 +14,12 @@ interface ProductProps {
 const Product: React.FC<ProductProps> = ({product, isSelected, onCardClick, isFree}) => {
   const {name, image, priceNet, priceTaxPercentage, chargeMethod} = product;
   const LazyImage = lazy(() => import("../lazyImage/LazyImage"));
+  const productClasses = classnames("product", {
+    "selected-product": isSelected || isFree,
+  });
 
   return (
-    <div className="product" onClick={() => onCardClick(product)}>
+    <div className={productClasses} onClick={isFree ? undefined : () => onCardClick(product)}>
       <div className="details">
         <p className="name">{name}</p>
         <Suspense fallback={<div>Loading...</div>}>
@@ -30,9 +34,7 @@ const Product: React.FC<ProductProps> = ({product, isSelected, onCardClick, isFr
           </div>
         )}
       </div>
-      {isFree ? (
-        <p>Included</p>
-      ) : (
+      {!isFree && (
         <div className="checkbox-container">
           <input type="checkbox" checked={isSelected} readOnly />
         </div>

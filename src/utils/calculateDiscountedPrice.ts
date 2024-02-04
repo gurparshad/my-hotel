@@ -6,5 +6,5 @@ export const calculateDiscountedPrice = (numberOfNights: number, pricePerNight: 
 
   const discountedPrice = totalPrice - (totalPrice * 0.05);
 
-  return discountedPrice;
+  return Number(discountedPrice.toFixed(2));
 }

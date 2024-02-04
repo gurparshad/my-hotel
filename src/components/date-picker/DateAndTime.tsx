@@ -8,6 +8,7 @@ import {
   updateRoom,
   setStartTime,
   setEndTime,
+  addProduct,
 } from "../../features/form/formSlice";
 import {calculateDiscountedPrice} from "../../utils/calculateDiscountedPrice";
 import {calculateNumberOfNights} from "../../utils/calculateNumberOfNights";
@@ -109,6 +110,17 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
       // @ts-ignore
       dispatch(updateRoom(updatedRoom));
 
+      const breakfast = {
+        id: 1,
+        name: "Breakfast",
+        priceNet: 6,
+        priceTaxPercentage: 0.09,
+        chargeMethod: "nightly",
+        image: "https://via.placeholder.com/400x200.png?text=Breakfast",
+        numberOfNights: numberOfNights,
+        totalPrice: 0,
+      };
+
       for (const selectedProduct of selectedProducts) {
         let updatedProduct;
         if (selectedProduct.id === 1 && numberOfNights >= 28) {
@@ -136,6 +148,12 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
         }
         dispatch(updateProduct(updatedProduct));
       }
+      const isBreakfastSelected = selectedProducts.some((product) => product.id === 1);
+
+      if (!isBreakfastSelected && numberOfNights >= 28) {
+        dispatch(addProduct(breakfast));
+      }
+
       onNext();
     }
   };
@@ -153,7 +171,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
               selectsStart
               startDate={startDateFormatted}
               endDate={endDateFormatted}
-              dateFormat="MM/dd/yyyy"
+              dateFormat="dd/MM/yyyy"
               className="datePicker"
               placeholderText="Date"
             />
@@ -179,7 +197,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
               startDate={startDateFormatted}
               endDate={endDateFormatted}
               minDate={startDateFormatted}
-              dateFormat="MM/dd/yyyy"
+              dateFormat="dd/MM/yyyy"
               className="datePicker"
               placeholderText="Date"
             />
