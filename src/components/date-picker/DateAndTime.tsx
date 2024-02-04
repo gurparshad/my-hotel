@@ -24,6 +24,8 @@ interface DateAndTimeProps {
   onNext: () => void;
 }
 
+// we can update the time into our current date state.
+
 const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
   const dispatch = useAppDispatch();
   const [errors, setErrors] = useState<string[]>([]);

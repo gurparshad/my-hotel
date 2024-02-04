@@ -51,3 +51,10 @@ export interface SelectedProduct {
   totalPrice: number;
   chargeMethod: string;
 }
+
+export interface BookingData {
+  startDate: string;
+  endDate: string;
+  room: SelectedRoom;
+  products: SelectedProduct[];
+}

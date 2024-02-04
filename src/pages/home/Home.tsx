@@ -1,12 +1,18 @@
-import {Link} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {useAppDispatch} from "../../app/hooks";
 import Button from "../../components/button/Button";
 import "./home.scss";
 
-const Home = () => {
+const Home: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/book-room");
+  };
   return (
     <div className="home">
       <h2>Welcome to my hotel</h2>
-      <Link to="/book-room">Book Now</Link>
+      <Button onClick={handleClick}>Book Now</Button>
     </div>
   );
 };
