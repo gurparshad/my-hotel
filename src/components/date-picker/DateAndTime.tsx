@@ -16,8 +16,9 @@ import {calculateTotalPrice} from "../../utils/calculateTotalPrice";
 import {SelectedProduct, SelectedRoom} from "../../utils/types";
 import Button from "../button/Button";
 import TimeDropdown from "../timeDropdown/TimeDropdown";
-import "react-datepicker/dist/react-datepicker.css";
 import {useState} from "react";
+import "react-datepicker/dist/react-datepicker.css";
+import "./dateAndTime.scss";
 
 interface DateAndTimeProps {
   onNext: () => void;
@@ -31,6 +32,8 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
   const endDate = useAppSelector((state: RootState) => state.form.form.formData.endDate);
   const startTime = useAppSelector((state: RootState) => state.form.form.formData.startTime);
   const endTime = useAppSelector((state: RootState) => state.form.form.formData.endTime);
+  // @ts-ignore
+  const numberOfNights = calculateNumberOfNights(startDate, endDate);
 
   const selectedRoom: SelectedRoom | null = useAppSelector((state: RootState) => state.form.form.formData.room);
 
@@ -73,14 +76,13 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
     if (!endDate) newErrors.push("endDate");
     if (!startTime) newErrors.push("startTime");
     if (!endTime) newErrors.push("endTime");
-
+    if (numberOfNights < 1) newErrors.push("minimumNights");
     if (newErrors.length > 0) {
       setErrors(newErrors);
       return;
     }
 
     if (startDate && endDate) {
-      const numberOfNights = calculateNumberOfNights(startDate, endDate);
       let updatedRoom;
       if (selectedRoom) {
         updatedRoom = {
@@ -132,10 +134,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
         }
         dispatch(updateProduct(updatedProduct));
       }
-
       onNext();
-    } else {
-      alert("Please select both start and end dates.");
     }
   };
 
@@ -160,7 +159,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
             />
             {errors.includes("startDate") && <p style={{color: "red"}}>Please select a start date.</p>}
           </div>
-          <div>
+          <div className="startTimeContainer">
             <p>Select checkin Time</p>
             <TimeDropdown
               value={startTime ?? ""}
@@ -183,12 +182,13 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
             />
             {errors.includes("endDate") && <p style={{color: "red"}}>Please select an end date.</p>}
           </div>
-          <div>
+          <div className="endTimeContainer">
             <p>Select checkout Time</p>
             <TimeDropdown value={endTime ?? ""} times={endTimes} onChange={(time: string) => handleEndTime(time)} />
             {errors.includes("endTime") && <p style={{color: "red"}}>Please select a checkout time.</p>}
           </div>
         </div>
+        {errors.includes("minimumNights") && <p style={{color: "red"}}>Booking is possible for minimum 1 night</p>}
         <Button onClick={handleSubmit} type="submit">
           Next
         </Button>

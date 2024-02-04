@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom
 import Home from "./pages/home/Home";
 import Success from "./pages/success/Success";
 import {ReactElement} from "react";
+import BookRoom from "./pages/bookRoom/BookRoom";
 
 interface ProtectedRouteProps {
   element: ReactElement;
@@ -19,6 +20,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/book-room" element={<BookRoom />} />
         <Route path="/success" element={<ProtectedRoute element={<Success />} />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

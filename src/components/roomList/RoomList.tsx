@@ -1,16 +1,17 @@
 import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {RootState} from "../../app/store";
-import {setRoom} from "../../features/form/formSlice";
-import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
 import {RoomType, SelectedRoom} from "../../utils/types";
-import Button from "../button/Button";
-import Room from "../room/Room";
-
-import data from "../../data/data.json";
+import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
 import {calculateTotalPrice} from "../../utils/calculateTotalPrice";
 import {calculateDiscountedPrice} from "../../utils/calculateDiscountedPrice";
 import {calculateNumberOfNights} from "../../utils/calculateNumberOfNights";
+import {setRoom} from "../../features/form/formSlice";
+import {RootState} from "../../app/store";
+import Button from "../button/Button";
+import data from "../../data/data.json";
+import Room from "../room/Room";
+
 import "./roomList.scss";
+import {useState} from "react";
 
 const rooms = data.rooms.data;
 const bookings = data.bookings.data;
@@ -22,16 +23,18 @@ interface RoomListProps {
 
 const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
   const dispatch = useAppDispatch();
-
+  const [error, setError] = useState<Boolean>(false);
   const selectedRoom: SelectedRoom | null = useAppSelector((state: RootState) => state.form.form.formData.room);
-
   const startDate = useAppSelector((state: RootState) => state.form.form.formData.startDate);
-
-  const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
-
   const endDate = useAppSelector((state: RootState) => state.form.form.formData.endDate);
 
+  const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
   const endDateFormatted = endDate ? (typeof endDate === "string" ? new Date(endDate) : endDate) : null;
+
+  let discountedPrice = 0;
+  let totalPrice = 0;
+  // @ts-ignore
+  let numberOfNights = calculateNumberOfNights(startDate, endDate);
 
   const checkRoomAvailability = (roomId: number) => {
     const selectedStartUtc = startDateFormatted?.toISOString();
@@ -53,12 +56,6 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
     }
     return true;
   };
-
-  let discountedPrice = 0;
-  let totalPrice = 0;
-  // @ts-ignore
-  let numberOfNights = calculateNumberOfNights(startDate, endDate);
-  console.log("number of nights", numberOfNights);
 
   const handleDiscountedPrice = (room: RoomType) => {
     if (numberOfNights >= 3) {
@@ -92,7 +89,7 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
     if (selectedRoom) {
       onNext();
     } else {
-      alert("Please select a room.");
+      setError(true);
     }
   };
 
@@ -112,6 +109,7 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
           />
         ))}
       </div>
+      {error && <p style={{color: "red"}}>Please select a room</p>}
       <div>
         <Button onClick={onBack}>Back</Button>
         <Button onClick={handleSubmit}>Next</Button>
