@@ -1,9 +1,47 @@
+.dateAndTime {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .datePickerContainer {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  text-align: left;
   position: relative;
+}
+
+.timePickerContainer{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  position: relative;
+}
+
+.checkInContainer{
+  display: flex;
   justify-content: center;
-  margin-bottom: 20px;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.checkOutContainer{
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 30px;
+
+}
+
+.error {
+  color: red;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 2px;
+  position: absolute;
+  top: 30px;
 }
 
 .datePicker {
@@ -16,4 +54,8 @@
 .react-datepicker__tab-loop {
   position: absolute;
   top: 0;
+}
+
+.bookingError {
+  top: 185px;
 }

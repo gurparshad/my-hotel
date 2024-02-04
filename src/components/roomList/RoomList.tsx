@@ -108,9 +108,9 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
             totalPrice={handleTotalPrice(room)}
           />
         ))}
+        {error && <p className="error">Please select a room</p>}
       </div>
-      {error && <p style={{color: "red"}}>Please select a room</p>}
-      <div>
+      <div className="buttonContainer">
         <Button onClick={onBack}>Back</Button>
         <Button onClick={handleSubmit}>Next</Button>
       </div>

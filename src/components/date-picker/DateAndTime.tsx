@@ -139,15 +139,12 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
   };
 
   return (
-    <>
+    <div className="dateAndTime">
+      <h2>Select the Booking date and time</h2>
       <form onSubmit={handleSubmit}>
-        <h2>Select the Booking dates</h2>
-        <div
-          className="datePickerContainer"
-          style={{display: "flex", justifyContent: "center", alignItems: "baseline"}}
-        >
-          <div className="startDateContainer">
-            <label>Start Date</label>
+        <div className="checkInContainer">
+          <label>Check In</label>
+          <div className="datePickerContainer">
             <DatePicker
               selected={startDateFormatted}
               onChange={(date: Date) => handleStartDateChange(date)}
@@ -156,20 +153,23 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
               endDate={endDateFormatted}
               dateFormat="MM/dd/yyyy"
               className="datePicker"
+              placeholderText="Date"
             />
-            {errors.includes("startDate") && <p style={{color: "red"}}>Please select a start date.</p>}
+            {errors.includes("startDate") && <p className="error">Please select a check-in date</p>}
           </div>
-          <div className="startTimeContainer">
-            <p>Select checkin Time</p>
+          <div className="timePickerContainer">
             <TimeDropdown
               value={startTime ?? ""}
               times={startTimes}
               onChange={(time: string) => handleStartTime(time)}
             />
-            {errors.includes("startTime") && <p style={{color: "red"}}>Please select a check-in time.</p>}
+            {errors.includes("startTime") && <p className="error">Please select a check-in time.</p>}
           </div>
-          <div className="endDateContainer">
-            <label>End Date</label>
+        </div>
+
+        <div className="checkOutContainer">
+          <label>Check Out</label>
+          <div className="datePickerContainer">
             <DatePicker
               selected={endDateFormatted}
               onChange={(date: any) => handleEndDateChange(date)}
@@ -179,21 +179,24 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
               minDate={startDateFormatted}
               dateFormat="MM/dd/yyyy"
               className="datePicker"
+              placeholderText="Date"
             />
-            {errors.includes("endDate") && <p style={{color: "red"}}>Please select an end date.</p>}
+            {errors.includes("endDate") && <p className="error">Please select an end date.</p>}
           </div>
-          <div className="endTimeContainer">
-            <p>Select checkout Time</p>
+          <div className="timePickerContainer">
             <TimeDropdown value={endTime ?? ""} times={endTimes} onChange={(time: string) => handleEndTime(time)} />
-            {errors.includes("endTime") && <p style={{color: "red"}}>Please select a checkout time.</p>}
+            {errors.includes("endTime") && <p className="error">Please select a checkout time.</p>}
           </div>
+          {errors.includes("minimumNights") && (
+            <p className={"error bookingError"}>Booking is possible for minimum 1 night</p>
+          )}
         </div>
-        {errors.includes("minimumNights") && <p style={{color: "red"}}>Booking is possible for minimum 1 night</p>}
+
         <Button onClick={handleSubmit} type="submit">
           Next
         </Button>
       </form>
-    </>
+    </div>
   );
 };
 

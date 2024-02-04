@@ -16,7 +16,7 @@ const TimeDropdown: React.FC<TimeDropdownProps> = ({times, onChange, value}) => 
   };
 
   return (
-    <select value={selectedTime} onChange={handleTimeChange}>
+    <select className="timeDropDown" value={selectedTime} onChange={handleTimeChange}>
       <option value="">Select Time</option>
       {times.map((time, index) => (
         <option key={index} value={time}>
