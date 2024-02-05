@@ -59,6 +59,7 @@ const ProductList: React.FC<ProductListProps> = ({onNext, onBack}) => {
       <div className={styles.products}>
         {products.map((product: ProductType) => (
           <Product
+            key={product.id}
             product={product}
             isSelected={selectedProductIds.includes(product.id)}
             onCardClick={handleCardClick}

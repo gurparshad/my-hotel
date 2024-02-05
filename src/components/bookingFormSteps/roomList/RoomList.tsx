@@ -90,6 +90,7 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
       <div className={styles.rooms}>
         {rooms.map((room: RoomType) => (
           <Room
+            key={room.id}
             room={room}
             perNightPrice={calculatePerNightPrice(room.pricePerNightNet, room.priceTaxPercentage)}
             onSelect={handleRoomSelect}
