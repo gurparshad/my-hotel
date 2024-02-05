@@ -6,7 +6,7 @@ interface ErrorProps {
 }
 
 const Error: React.FC<ErrorProps> = ({message, customClass}) => {
-  return <p className={`${styles.error} ${customClass}`}>{message}</p>;
+  return <p className={` ${customClass} ${styles.error}`}>{message}</p>;
 };
 
 export default Error;

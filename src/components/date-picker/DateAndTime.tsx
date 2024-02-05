@@ -213,15 +213,15 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
             <TimeDropdown value={endTime ?? ""} times={endTimes} onChange={(time: string) => handleEndTime(time)} />
             {errors.includes("endTime") && <Error message="Please select a checkout time" />}
           </div>
-          {errors.includes("minimumNights") && (
-            <Error customClass={styles.bookingError} message="Booking is possible for minimum 1 night" />
-          )}
         </div>
 
         <Button onClick={handleSubmit} type="submit">
           Next
         </Button>
       </form>
+      {errors.includes("minimumNights") && (
+        <Error customClass={styles.bookingError} message="Booking is possible for minimum 1 night" />
+      )}
     </div>
   );
 };
