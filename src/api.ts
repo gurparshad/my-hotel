@@ -34,7 +34,6 @@ export class MyHotelApi {
   constructor() {
     this.client = axios.create({
       baseURL: 'https://jsonplaceholder.typicode.com/posts',
-      withCredentials: true,
     });
   }
 

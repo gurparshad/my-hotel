@@ -11,6 +11,7 @@ import data from "../../data/data.json";
 import Room from "../room/Room";
 import {useState} from "react";
 import styles from "./roomList.module.scss";
+import Error from "../error/Error";
 
 const rooms = data.rooms.data;
 const bookings = data.bookings.data;
@@ -98,7 +99,8 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
             totalPrice={handleTotalPrice(room)}
           />
         ))}
-        {error && <p className={styles.error}>Please select a room</p>}
+
+        {error && <Error customClass={styles.roomError} message="Please select a room" />}
       </div>
       <div className={styles.buttonContainer}>
         <Button onClick={onBack}>Back</Button>

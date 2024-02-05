@@ -1,6 +1,6 @@
 import {HTMLAttributes} from "react";
 import styles from "./button.module.scss";
-import classNames from "classnames";
+import classnames from "classnames";
 
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   onClick: any;
@@ -9,7 +9,7 @@ interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
 }
 
 const Button: React.FC<ButtonProps> = ({children, onClick, customClass, type}) => {
-  const buttonClasses = classNames(styles.button, customClass);
+  const buttonClasses = classnames(styles.button, customClass);
   return (
     <button onClick={onClick} className={buttonClasses} type={type}>
       {children}

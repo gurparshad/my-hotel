@@ -23,7 +23,7 @@ import {useState} from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./dateAndTime.module.scss";
 import {toUtcFormat} from "../../utils/toUtcFormat";
-import classnames from "classnames";
+import Error from "../error/Error";
 
 interface DateAndTimeProps {
   onNext: () => void;
@@ -181,7 +181,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
               className={styles.datePicker}
               placeholderText="Date"
             />
-            {errors.includes("startDate") && <p className={styles.error}>Please select a check-in date</p>}
+            {errors.includes("startDate") && <Error message="Please select a check-in date" />}
           </div>
           <div className={styles.timePickerContainer}>
             <TimeDropdown
@@ -189,7 +189,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
               times={startTimes}
               onChange={(time: string) => handleStartTime(time)}
             />
-            {errors.includes("startTime") && <p className={styles.error}>Please select a check-in time.</p>}
+            {errors.includes("startTime") && <Error message="Please select a check-in time" />}
           </div>
         </div>
 
@@ -207,16 +207,14 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
               className={styles.datePicker}
               placeholderText="Date"
             />
-            {errors.includes("endDate") && <p className={styles.error}>Please select an end date.</p>}
+            {errors.includes("endDate") && <Error message="Please select an end date" />}
           </div>
           <div className={styles.timePickerContainer}>
             <TimeDropdown value={endTime ?? ""} times={endTimes} onChange={(time: string) => handleEndTime(time)} />
-            {errors.includes("endTime") && <p className={styles.error}>Please select a checkout time.</p>}
+            {errors.includes("endTime") && <Error message="Please select a checkout time" />}
           </div>
           {errors.includes("minimumNights") && (
-            <p className={classnames(`${styles.error} ${styles.bookingError}`)}>
-              Booking is possible for minimum 1 night
-            </p>
+            <Error customClass={styles.bookingError} message="Booking is possible for minimum 1 night" />
           )}
         </div>
 

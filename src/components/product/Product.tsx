@@ -7,8 +7,8 @@ import styles from "./product.module.scss";
 interface ProductProps {
   product: ProductType;
   isSelected: boolean;
-  onCardClick: any;
   isFree: boolean;
+  onCardClick: (product: ProductType) => void;
 }
 
 const Product: React.FC<ProductProps> = ({product, isSelected, onCardClick, isFree}) => {

@@ -3,12 +3,7 @@
   flex-direction: column;
   gap: 20px;
   
-  .error {
-  color: red;
-  font-size: 13px;
-  font-weight: 500;
-  margin-top: 2px;
-  position: absolute;
+  .roomError {
   top: 275px;
 }
 }

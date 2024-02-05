@@ -11,7 +11,7 @@ interface ProtectedRouteProps {
 
 const App = () => {
   const ProtectedRoute: React.FC<ProtectedRouteProps> = ({element}) => {
-    // get boolean from cookies or some where else to enable this route.
+    // TODO: get boolean from cookies or some where else to enable this route.
     // in place of true put some dynamic value.
     return true ? element : <Navigate to="/" replace />;
   };
