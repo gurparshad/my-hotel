@@ -24,7 +24,7 @@ const CreateBooking: React.FC<CreateBookingProps> = ({onBack}) => {
 
   const calculateGrandTotal = () => {
     const roomPrice = room?.discountedPrice ?? room?.totalPrice;
-    const totalProductPrices = products.reduce((accumulator, product) => {
+    const totalProductPrices = products.reduce((accumulator: any, product: any) => {
       return accumulator + product.totalPrice;
     }, 0);
     // @ts-ignore

@@ -27,28 +27,19 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
   const startDate = useAppSelector((state: RootState) => state.form.form.formData.startDate);
   const endDate = useAppSelector((state: RootState) => state.form.form.formData.endDate);
 
-  const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
-  const endDateFormatted = endDate ? (typeof endDate === "string" ? new Date(endDate) : endDate) : null;
+  const utcCheckInDate = useAppSelector((state: RootState) => state.form.form.formData.utcCheckInDateTime);
+  const utcCheckOutDate = useAppSelector((state: RootState) => state.form.form.formData.utcCheckOutDateTime);
 
   let discountedPrice = 0;
   let totalPrice = 0;
-  // @ts-ignore
   let numberOfNights = calculateNumberOfNights(startDate, endDate);
 
   const checkRoomAvailability = (roomId: number) => {
-    const selectedStartUtc = startDateFormatted?.toISOString();
-    const selectedEndUtc = endDateFormatted?.toISOString();
-
     for (const booking of bookings) {
-      const bookingStartDate = new Date(booking.startDateUtc);
-      const bookingEndDate = new Date(booking.endDateUtc);
-
       if (
         booking.roomId === roomId &&
-        // @ts-ignore
-        ((selectedStartUtc <= bookingEndDate.toISOString() && selectedStartUtc >= bookingStartDate.toISOString()) ||
-          // @ts-ignore
-          (selectedEndUtc <= bookingEndDate.toISOString() && selectedEndUtc >= bookingStartDate.toISOString()))
+        ((utcCheckInDate <= booking.endDateUtc && utcCheckInDate >= booking.startDateUtc) ||
+          (utcCheckOutDate <= booking.endDateUtc && utcCheckOutDate >= booking.startDateUtc))
       ) {
         return false;
       }
@@ -100,7 +91,6 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
             room={room}
             perNightPrice={calculatePerNightPrice(room.pricePerNightNet, room.priceTaxPercentage)}
             onSelect={handleRoomSelect}
-            // @ts-ignore
             isSelected={selectedRoom ? selectedRoom.id === room.id : false}
             isAvailable={checkRoomAvailability(room.id)}
             discountedPrice={handleDiscountedPrice(room)}

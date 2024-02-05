@@ -12,7 +12,7 @@ interface FormData {
 
 interface RootState {
   currentStep: number;
-  formData: FormData;
+  formData: any;
 }
 
 const initialState: RootState = {
@@ -22,6 +22,8 @@ const initialState: RootState = {
     endDate: null,
     startTime: null,
     endTime: null,
+    utcCheckInDateTime: null,
+    utcCheckOutDateTime: null,
     room: null,
     products: [],
   },
@@ -46,6 +48,12 @@ const formSlice = createSlice({
     setEndTime: (state, action) => {
       state.formData.endTime = action.payload;
     },
+    setUtcCheckInDateTime: (state, action) => {
+      state.formData.utcCheckInDateTime = action.payload;
+    },
+    setUtcCheckOutDateTime: (state, action) => {
+      state.formData.utcCheckOutDateTime = action.payload;
+    },
     setRoom: (state, action) => {
       state.formData.room = action.payload;
     },
@@ -59,7 +67,7 @@ const formSlice = createSlice({
     },
     updateProduct: (state, action: PayloadAction<SelectedProduct>) => {
       const { id } = action.payload;
-      const updatedProducts = state.formData.products.map(product => {
+      const updatedProducts = state.formData.products.map((product: any) => {
         if (product.id === id) {
           return {
             ...action.payload
@@ -80,6 +88,6 @@ const formSlice = createSlice({
   },
 });
 
-export const { setCurrentStep, setStartDate, setEndDate, setStartTime, setEndTime, setRoom, updateRoom, addProduct, removeProduct, updateProduct, resetForm } = formSlice.actions;
+export const { setCurrentStep, setStartDate, setEndDate, setStartTime, setEndTime, setRoom, updateRoom, addProduct, removeProduct, updateProduct, setUtcCheckInDateTime, setUtcCheckOutDateTime, resetForm } = formSlice.actions;
 
 export default formSlice.reducer;
