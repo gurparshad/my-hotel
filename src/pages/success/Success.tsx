@@ -4,7 +4,7 @@ import Button from "../../components/button/Button";
 import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
 import {formatDate} from "../../utils/formatDate";
 import {BookingData, SelectedProduct} from "../../utils/types";
-import "./success.scss";
+import styles from "./success.module.scss";
 
 const Success = () => {
   const [formData, setFormData] = useState<BookingData>();

@@ -1,18 +1,22 @@
-.product {
+.room {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 16px;
   transition: transform 0.3s ease;
   margin: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   max-width: 500px;
   cursor: pointer;
 
   &:hover {
     transform: translateY(-4px);
+  }
+
+  .details {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  align-items:baseline;
   }
 
   p {
@@ -26,14 +30,6 @@
     margin-top: 8px;
   }
 
-  .details {
-    display: flex;
-    flex-direction: column;
-    align-items:flex-start;
-    margin-top: 8px;
-    gap: 5px;
-  }
-
   .name {
     font-size: 1.2rem;
     font-weight: bold;
@@ -43,21 +39,23 @@
     color: #007bff;
     font-weight: bold;
   }
-
-  .chargeMethod {
-    color: #666;
+  .strike {
+    text-decoration: line-through;
   }
 
-  .checkbox-container {
+  .checkboxContainer {
     margin-top: 10px;
-  }
-
-  input[type="checkbox"] {
-    cursor: pointer;
-    transform: scale(1.5);
   }
 }
 
-.selected-product {
+.disabledRoom {
+  background-color: #f2f2f2;
+}
+
+.disabledRoom:hover {
+  transform: none;
+}
+
+.selectedRoom {
   background-color: #9ae4f3;
 }

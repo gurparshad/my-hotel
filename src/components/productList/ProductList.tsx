@@ -9,7 +9,7 @@ import {addProduct, removeProduct} from "../../features/form/formSlice";
 import {calculateNumberOfNights} from "../../utils/calculateNumberOfNights";
 import {calculateTotalPrice} from "../../utils/calculateTotalPrice";
 import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
-import "./productList.scss";
+import styles from "./productList.module.scss";
 
 interface ProductListProps {
   onNext: () => void;
@@ -55,8 +55,8 @@ const ProductList: React.FC<ProductListProps> = ({onNext, onBack}) => {
   };
 
   return (
-    <div className="productList">
-      <div className="products">
+    <div className={styles.productList}>
+      <div className={styles.products}>
         {products.map((product: ProductType) => (
           <Product
             product={product}

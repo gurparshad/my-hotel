@@ -10,7 +10,7 @@ import Button from "../button/Button";
 import data from "../../data/data.json";
 import Room from "../room/Room";
 import {useState} from "react";
-import "./roomList.scss";
+import styles from "./roomList.module.scss";
 
 const rooms = data.rooms.data;
 const bookings = data.bookings.data;
@@ -85,8 +85,8 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
   };
 
   return (
-    <div className="roomList">
-      <div className="rooms">
+    <div className={styles.roomList}>
+      <div className={styles.rooms}>
         {rooms.map((room: RoomType) => (
           <Room
             room={room}
@@ -98,9 +98,9 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
             totalPrice={handleTotalPrice(room)}
           />
         ))}
-        {error && <p className="error">Please select a room</p>}
+        {error && <p className={styles.error}>Please select a room</p>}
       </div>
-      <div className="buttonContainer">
+      <div className={styles.buttonContainer}>
         <Button onClick={onBack}>Back</Button>
         <Button onClick={handleSubmit}>Next</Button>
       </div>

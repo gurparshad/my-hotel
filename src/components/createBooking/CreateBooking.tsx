@@ -8,7 +8,7 @@ import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
 import {formatDate} from "../../utils/formatDate";
 import {SelectedProduct, SelectedRoom} from "../../utils/types";
 import Button from "../button/Button";
-import "./createBooking.scss";
+import styles from "./createBooking.module.scss";
 
 interface CreateBookingProps {
   onBack: () => void;
@@ -27,40 +27,34 @@ const CreateBooking: React.FC<CreateBookingProps> = ({onBack}) => {
     const totalProductPrices = products.reduce((accumulator: any, product: any) => {
       return accumulator + product.totalPrice;
     }, 0);
-    // @ts-ignore
     return Number((roomPrice + totalProductPrices).toFixed(2));
   };
 
   const handleSubmit = async () => {
     const response = await myHotelApi.submitBooking(formData);
-    console.log("response-->>", response);
     localStorage.setItem("bookingData", JSON.stringify(response));
     dispatch(resetForm());
     navigate("/success");
   };
 
   return (
-    <div className="create-booking">
-      <h2 className="heading">Booking Details</h2>
+    <div className={styles.createBooking}>
+      <h2 className={styles.heading}>Booking Details</h2>
       <p>Please check your booking details below</p>
-      <div className="booking-detail">
-        {/* @ts-ignore */}
-        <p className="sub-heading">Check In: {formatDate(startDate)}</p>
-        {/* @ts-ignore */}
-        <p className="sub-heading">Check Out: {formatDate(endDate)}</p>
+      <div className={styles.bookingDetail}>
+        <p className={styles.subHeading}>Check In: {formatDate(startDate)}</p>
+        <p className={styles.subHeading}>Check Out: {formatDate(endDate)}</p>
       </div>
-      <div className="room-details">
-        <h3 className="sub-heading">Room Details</h3>
+      <div className={styles.roomDetails}>
+        <h3 className={styles.subHeading}>Room Details</h3>
         <p>Name: {room?.name}</p>
-        {/* @ts-ignore */}
-
         <p>Price per night: {calculatePerNightPrice(room?.pricePerNight, room?.priceTaxPercentage)}</p>
         <p>Number of nights: {room?.numberOfNights}</p>
         <p>Total Price: {room?.totalPrice}</p>
         {room?.discountedPrice !== 0 && <p>Discounted Price: {room?.discountedPrice}</p>}
       </div>
-      <div className="product-table">
-        <h3 className="sub-heading">Products</h3>
+      <div className={styles.productTable}>
+        <h3 className={styles.subHeading}>Products</h3>
         <table>
           <thead>
             <tr>
@@ -80,12 +74,12 @@ const CreateBooking: React.FC<CreateBookingProps> = ({onBack}) => {
           </tbody>
         </table>
       </div>
-      <div className="grand-total">
+      <div className={styles.grandTotal}>
         <p>
           Grand Total: <span>${calculateGrandTotal()}</span>
         </p>
       </div>
-      <div className="buttons">
+      <div className={styles.buttons}>
         <Button onClick={onBack}>Back</Button>
         <Button onClick={handleSubmit}>Create Booking</Button>
       </div>

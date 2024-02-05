@@ -1,7 +1,7 @@
 import {useNavigate} from "react-router-dom";
 import {useAppDispatch} from "../../app/hooks";
 import Button from "../../components/button/Button";
-import "./home.scss";
+import styles from "./home.module.scss";
 
 const Home: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -10,7 +10,7 @@ const Home: React.FC = () => {
     navigate("/book-room");
   };
   return (
-    <div className="home">
+    <div className={styles.home}>
       <h2>Welcome to my hotel</h2>
       <Button onClick={handleClick}>Book Now</Button>
     </div>

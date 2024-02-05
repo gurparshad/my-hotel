@@ -1,7 +1,7 @@
 import {lazy, Suspense} from "react";
 import {RoomType} from "../../utils/types";
 import classnames from "classnames";
-import "./room.scss";
+import styles from "./room.module.scss";
 
 interface RoomProps {
   room: RoomType;
@@ -24,13 +24,13 @@ const Room: React.FC<RoomProps> = ({
 }) => {
   const LazyImage = lazy(() => import("../lazyImage/LazyImage"));
 
-  const totalPriceClass = classnames("price", {
-    strike: discountedPrice !== 0,
+  const totalPriceClass = classnames(styles.price, {
+    [styles.strike]: discountedPrice !== 0,
   });
 
-  const roomClasses = classnames("room", {
-    "disabled-room": !isAvailable,
-    "selected-room": isSelected,
+  const roomClasses = classnames(styles.room, {
+    [styles.disabledRoom]: !isAvailable,
+    [styles.selectedRoom]: isSelected,
   });
 
   const handleClick = () => {
@@ -39,18 +39,18 @@ const Room: React.FC<RoomProps> = ({
 
   return (
     <div className={roomClasses} onClick={isAvailable ? handleClick : undefined}>
-      <div className="details">
+      <div className={styles.details}>
         <Suspense fallback={<div>Loading...</div>}>
           <LazyImage src={room.image} alt="room-image" />
         </Suspense>
-        <p className="name">{room.name}</p>
-        <p className="price">${perNightPrice}/night</p>
+        <p className={styles.name}>{room.name}</p>
+        <p className={styles.price}>${perNightPrice}/night</p>
         <p className={totalPriceClass}>${totalPrice}</p>
-        {discountedPrice !== 0 && <p className="price">discounted price - ${discountedPrice}</p>}
+        {discountedPrice !== 0 && <p className={styles.price}>discounted price - ${discountedPrice}</p>}
         {!isAvailable && <p style={{color: "red"}}>Not avialable</p>}
       </div>
       {isAvailable && (
-        <div className="checkbox-container">
+        <div className={styles.checkboxContainer}>
           <input type="checkbox" checked={isSelected} readOnly />
         </div>
       )}

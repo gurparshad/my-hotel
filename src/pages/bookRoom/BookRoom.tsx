@@ -6,7 +6,7 @@ import ProductList from "../../components/productList/ProductList";
 import CreateBooking from "../../components/createBooking/CreateBooking";
 import {RootState} from "../../app/store";
 import ProgressBar from "../../components/progressBar/ProgressBar";
-import "./bookRoom.scss";
+import styles from "./bookRoom.module.scss";
 
 const BookRoom = () => {
   const currentStep = useAppSelector((state: RootState) => state.form.form.currentStep);
@@ -21,7 +21,7 @@ const BookRoom = () => {
   };
 
   return (
-    <div className="bookRoom">
+    <div className={styles.bookRoom}>
       <ProgressBar currentStep={currentStep} totalSteps={5} />
       {currentStep === 1 && <DateAndTime onNext={handleNext} />}
       {currentStep === 2 && <RoomList onNext={handleNext} onBack={handleBack} />}
