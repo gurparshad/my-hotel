@@ -1,13 +1,13 @@
 import React from "react";
 import {useNavigate} from "react-router-dom";
-import {MyHotelApi} from "../../api";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {RootState} from "../../app/store";
-import {resetForm} from "../../features/form/formSlice";
-import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
-import {formatDate} from "../../utils/formatDate";
-import {SelectedProduct, SelectedRoom} from "../../utils/types";
-import Button from "../button/Button";
+import {MyHotelApi} from "../../../api";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {RootState} from "../../../app/store";
+import {resetForm} from "../../../features/form/formSlice";
+import {calculatePerNightPrice} from "../../../utils/calculatePerNightPrice";
+import {formatDate} from "../../../utils/formatDate";
+import {SelectedProduct} from "../../../utils/types";
+import Button from "../../button/Button";
 import styles from "./createBooking.module.scss";
 
 interface CreateBookingProps {
@@ -31,7 +31,13 @@ const CreateBooking: React.FC<CreateBookingProps> = ({onBack}) => {
   };
 
   const handleSubmit = async () => {
-    const response = await myHotelApi.submitBooking(formData);
+    const data = {
+      room: formData.room,
+      products: formData.products,
+      utcCheckInDateTime: formData.utcCheckInDateTime,
+      utcCheckOutDateTime: formData.utcCheckOutDateTime,
+    };
+    const response = await myHotelApi.submitBooking(data);
     localStorage.setItem("bookingData", JSON.stringify(response));
     dispatch(resetForm());
     navigate("/success");

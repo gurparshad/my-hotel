@@ -53,8 +53,8 @@ export interface SelectedProduct {
 }
 
 export interface BookingData {
-  startDate: string;
-  endDate: string;
+  utcCheckInDateTime: string;
+  utcCheckOutDateTime: string;
   room: SelectedRoom;
   products: SelectedProduct[];
 }

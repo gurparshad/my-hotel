@@ -1,6 +1,6 @@
 import DatePicker from "react-datepicker";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {RootState} from "../../app/store";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {RootState} from "../../../app/store";
 import {
   updateProduct,
   setEndDate,
@@ -11,29 +11,30 @@ import {
   addProduct,
   setUtcCheckInDateTime,
   setUtcCheckOutDateTime,
-} from "../../features/form/formSlice";
-import {calculateDiscountedPrice} from "../../utils/calculateDiscountedPrice";
-import {calculateNumberOfNights} from "../../utils/calculateNumberOfNights";
-import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
-import {calculateTotalPrice} from "../../utils/calculateTotalPrice";
-import {SelectedProduct, SelectedRoom} from "../../utils/types";
-import Button from "../button/Button";
-import TimeDropdown from "../timeDropdown/TimeDropdown";
+} from "../../../features/form/formSlice";
+import {calculateDiscountedPrice} from "../../../utils/calculateDiscountedPrice";
+import {calculateNumberOfNights} from "../../../utils/calculateNumberOfNights";
+import {calculatePerNightPrice} from "../../../utils/calculatePerNightPrice";
+import {calculateTotalPrice} from "../../../utils/calculateTotalPrice";
+import {SelectedProduct, SelectedRoom} from "../../../utils/types";
+import Button from "../../button/Button";
+import TimeDropdown from "../../timeDropdown/TimeDropdown";
 import {useState} from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import styles from "./dateAndTime.module.scss";
-import {toUtcFormat} from "../../utils/toUtcFormat";
-import Error from "../error/Error";
+import {toUtcFormat} from "../../../utils/toUtcFormat";
+import Error from "../../error/Error";
+import data from "../../../data/data.json";
 
 interface DateAndTimeProps {
   onNext: () => void;
 }
 
-// we can update the time into our current date state.
-
 const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
   const dispatch = useAppDispatch();
   const [errors, setErrors] = useState<string[]>([]);
+  const startTimesLocal = data.property.startTimesLocal;
+  const endTimesLocal = data.property.endTimesLocal;
 
   const selectedRoom: SelectedRoom | null = useAppSelector((state: RootState) => state.form.form.formData.room);
   const startDate = useAppSelector((state: RootState) => state.form.form.formData.startDate);
@@ -41,18 +42,24 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
   const startTime = useAppSelector((state: RootState) => state.form.form.formData.startTime);
   const endTime = useAppSelector((state: RootState) => state.form.form.formData.endTime);
   const numberOfNights = calculateNumberOfNights(startDate, endDate);
-
   const selectedProducts: SelectedProduct[] | [] = useAppSelector(
     (state: RootState) => state.form.form.formData.products
   );
 
+  const breakfast = {
+    id: 1,
+    name: "Breakfast",
+    priceNet: 6,
+    priceTaxPercentage: 0.09,
+    chargeMethod: "nightly",
+    image: "https://via.placeholder.com/400x200.png?text=Breakfast",
+    numberOfNights: numberOfNights,
+    totalPrice: 0,
+  };
+
   // put these methods as helper method for date formatting.
   const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
   const endDateFormatted = endDate ? (typeof endDate === "string" ? new Date(endDate) : endDate) : null;
-
-  // get these from teh json file.
-  const startTimes = ["12:00", "13:00", "14:00", "15:00", "16:00", "17:00"];
-  const endTimes = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00"];
 
   const handleStartTime = (selectedTime: string) => {
     dispatch(setStartTime(selectedTime));
@@ -115,17 +122,6 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
       // @ts-ignore
       dispatch(updateRoom(updatedRoom));
 
-      const breakfast = {
-        id: 1,
-        name: "Breakfast",
-        priceNet: 6,
-        priceTaxPercentage: 0.09,
-        chargeMethod: "nightly",
-        image: "https://via.placeholder.com/400x200.png?text=Breakfast",
-        numberOfNights: numberOfNights,
-        totalPrice: 0,
-      };
-
       for (const selectedProduct of selectedProducts) {
         let updatedProduct;
         if (selectedProduct.id === 1 && numberOfNights >= 28) {
@@ -186,7 +182,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
           <div className={styles.timePickerContainer}>
             <TimeDropdown
               value={startTime ?? ""}
-              times={startTimes}
+              times={startTimesLocal}
               onChange={(time: string) => handleStartTime(time)}
             />
             {errors.includes("startTime") && <Error message="Please select a check-in time" />}
@@ -210,7 +206,11 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
             {errors.includes("endDate") && <Error message="Please select an end date" />}
           </div>
           <div className={styles.timePickerContainer}>
-            <TimeDropdown value={endTime ?? ""} times={endTimes} onChange={(time: string) => handleEndTime(time)} />
+            <TimeDropdown
+              value={endTime ?? ""}
+              times={endTimesLocal}
+              onChange={(time: string) => handleEndTime(time)}
+            />
             {errors.includes("endTime") && <Error message="Please select a checkout time" />}
           </div>
         </div>

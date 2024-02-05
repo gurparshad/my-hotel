@@ -1,10 +1,8 @@
 import {useNavigate} from "react-router-dom";
-import {useAppDispatch} from "../../app/hooks";
 import Button from "../../components/button/Button";
 import styles from "./home.module.scss";
 
 const Home: React.FC = () => {
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const handleClick = () => {
     navigate("/book-room");

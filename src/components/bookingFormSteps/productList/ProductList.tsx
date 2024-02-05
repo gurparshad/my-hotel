@@ -1,14 +1,14 @@
 import React from "react";
-import {ProductType} from "../../utils/types";
-import Button from "../button/Button";
-import Product from "../product/Product";
-import data from "../../data/data.json";
-import {useAppDispatch, useAppSelector} from "../../app/hooks";
-import {RootState} from "../../app/store";
-import {addProduct, removeProduct} from "../../features/form/formSlice";
-import {calculateNumberOfNights} from "../../utils/calculateNumberOfNights";
-import {calculateTotalPrice} from "../../utils/calculateTotalPrice";
-import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
+import {ProductType} from "../../../utils/types";
+import Button from "../../button/Button";
+import Product from "./product/Product";
+import data from "../../../data/data.json";
+import {useAppDispatch, useAppSelector} from "../../../app/hooks";
+import {RootState} from "../../../app/store";
+import {addProduct, removeProduct} from "../../../features/form/formSlice";
+import {calculateNumberOfNights} from "../../../utils/calculateNumberOfNights";
+import {calculateTotalPrice} from "../../../utils/calculateTotalPrice";
+import {calculatePerNightPrice} from "../../../utils/calculatePerNightPrice";
 import styles from "./productList.module.scss";
 
 interface ProductListProps {

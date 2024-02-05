@@ -4,7 +4,6 @@ import Button from "../../components/button/Button";
 import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
 import {formatDate} from "../../utils/formatDate";
 import {BookingData, SelectedProduct} from "../../utils/types";
-import styles from "./success.module.scss";
 
 const Success = () => {
   const [formData, setFormData] = useState<BookingData>();
@@ -17,8 +16,8 @@ const Success = () => {
     }
   }, []);
 
-  const startDate = formData?.startDate;
-  const endDate = formData?.endDate;
+  const startDate = formData?.utcCheckInDateTime;
+  const endDate = formData?.utcCheckOutDateTime;
   const room = formData?.room;
   const products = formData?.products;
   const navigate = useNavigate();
