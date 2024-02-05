@@ -39,7 +39,8 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
       if (
         booking.roomId === roomId &&
         ((utcCheckInDate <= booking.endDateUtc && utcCheckInDate >= booking.startDateUtc) ||
-          (utcCheckOutDate <= booking.endDateUtc && utcCheckOutDate >= booking.startDateUtc))
+          (utcCheckOutDate <= booking.endDateUtc && utcCheckOutDate >= booking.startDateUtc) ||
+          (utcCheckInDate <= booking.startDateUtc && utcCheckOutDate >= booking.endDateUtc))
       ) {
         return false;
       }
