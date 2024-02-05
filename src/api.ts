@@ -1,4 +1,5 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
+import { BookingData } from "./types";
 
 export class MyHotelApi {
   private client: AxiosInstance;
@@ -7,7 +8,7 @@ export class MyHotelApi {
     SUBMIT_BOOKING: "",
   };
 
-  private handleRequest = async (request: Promise<AxiosResponse<any>>) =>
+  private handleRequest = async (request: Promise<AxiosResponse<unknown, any>>) =>
     request.then(this.handleResult).catch(this.handleError);
 
   private handleError(err: AxiosError) {
@@ -37,8 +38,7 @@ export class MyHotelApi {
     });
   }
 
-  public submitBooking = async (bookingData: any) => {
-    // TODO: before uploading data - convert the date time from local to UTC.
+  public submitBooking = async (bookingData: BookingData) => {
     try {
       const response = await this.handleRequest(
         this.client.post(this.routes.SUBMIT_BOOKING, bookingData)

@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {RoomType, SelectedRoom} from "../../../utils/types";
+import {RoomType, SelectedRoom} from "../../../types";
 import {calculatePerNightPrice} from "../../../utils/calculatePerNightPrice";
 import {calculateTotalPrice} from "../../../utils/calculateTotalPrice";
 import {calculateDiscountedPrice} from "../../../utils/calculateDiscountedPrice";

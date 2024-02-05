@@ -6,7 +6,7 @@ import {RootState} from "../../../app/store";
 import {resetForm} from "../../../features/form/formSlice";
 import {calculatePerNightPrice} from "../../../utils/calculatePerNightPrice";
 import {formatDate} from "../../../utils/formatDate";
-import {SelectedProduct} from "../../../utils/types";
+import {SelectedProduct} from "../../../types";
 import Button from "../../button/Button";
 import styles from "./createBooking.module.scss";
 
@@ -24,23 +24,28 @@ const CreateBooking: React.FC<CreateBookingProps> = ({onBack}) => {
 
   const calculateGrandTotal = () => {
     const roomPrice = room?.discountedPrice ?? room?.totalPrice;
-    const totalProductPrices = products.reduce((accumulator: any, product: any) => {
+    const totalProductPrices = products.reduce((accumulator: number, product: SelectedProduct) => {
       return accumulator + product.totalPrice;
     }, 0);
     return Number((roomPrice + totalProductPrices).toFixed(2));
   };
 
   const handleSubmit = async () => {
-    const data = {
-      room: formData.room,
-      products: formData.products,
-      utcCheckInDateTime: formData.utcCheckInDateTime,
-      utcCheckOutDateTime: formData.utcCheckOutDateTime,
-    };
-    const response = await myHotelApi.submitBooking(data);
-    localStorage.setItem("bookingData", JSON.stringify(response));
-    dispatch(resetForm());
-    navigate("/success");
+    try {
+      const data = {
+        room: formData.room,
+        products: formData.products,
+        utcCheckInDateTime: formData.utcCheckInDateTime,
+        utcCheckOutDateTime: formData.utcCheckOutDateTime,
+      };
+      const response = await myHotelApi.submitBooking(data);
+      localStorage.setItem("bookingData", JSON.stringify(response));
+      dispatch(resetForm());
+      navigate("/success");
+    } catch (error) {
+      console.error("Error submitting booking:", error);
+      throw error;
+    }
   };
 
   return (

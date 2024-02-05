@@ -1,4 +1,8 @@
-export const formatDate = (date: Date): string => {
+export const formatDate = (date: Date | null): string => {
+  if (!date) {
+    return "";
+  }
+
   const newDate = new Date(date);
 
   const year = newDate.getFullYear();

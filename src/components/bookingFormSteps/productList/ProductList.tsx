@@ -1,5 +1,5 @@
 import React from "react";
-import {ProductType} from "../../../utils/types";
+import {ProductType} from "../../../types";
 import Button from "../../button/Button";
 import Product from "./product/Product";
 import data from "../../../data/data.json";
@@ -22,7 +22,6 @@ const ProductList: React.FC<ProductListProps> = ({onNext, onBack}) => {
 
   const startDate = useAppSelector((state: RootState) => state.form.form.formData.startDate);
   const endDate = useAppSelector((state: RootState) => state.form.form.formData.endDate);
-  // @ts-ignore
   const numberOfNights = calculateNumberOfNights(startDate, endDate);
 
   const selectedProductIds = useAppSelector((state: RootState) =>
@@ -46,6 +45,7 @@ const ProductList: React.FC<ProductListProps> = ({onNext, onBack}) => {
       chargeMethod: product.chargeMethod,
       image: product.image,
       totalPrice: handleTotalPrice(product.id, product.priceNet, product.priceTaxPercentage),
+      numberOfNights: numberOfNights,
     };
     if (selectedProductIds.includes(product.id)) {
       dispatch(removeProduct(productData));

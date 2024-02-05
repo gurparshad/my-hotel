@@ -1,6 +1,6 @@
 import classnames from "classnames";
 import {calculatePerNightPrice} from "../../../../utils/calculatePerNightPrice";
-import {ProductType} from "../../../../utils/types";
+import {ProductType} from "../../../../types";
 import styles from "./product.module.scss";
 
 interface ProductProps {

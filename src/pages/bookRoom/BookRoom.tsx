@@ -9,7 +9,7 @@ import ProgressBar from "../../components/progressBar/ProgressBar";
 import styles from "./bookRoom.module.scss";
 
 const BookRoom = () => {
-  const currentStep: any = useAppSelector((state: RootState) => state.form.form.currentStep);
+  const currentStep: number = useAppSelector((state: RootState) => state.form.form.currentStep);
   const dispatch = useAppDispatch();
 
   const handleNext = () => {

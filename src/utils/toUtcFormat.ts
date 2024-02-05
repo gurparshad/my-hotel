@@ -1,4 +1,4 @@
-export const toUtcFormat = (date: string, time: string) => {
+export const toUtcFormat = (date: Date, time: string) => {
   const localDate = new Date(date);
 
   const [hour, minute] = time.split(":").map(part => parseInt(part));

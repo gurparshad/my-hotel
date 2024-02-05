@@ -16,7 +16,7 @@ import {calculateDiscountedPrice} from "../../../utils/calculateDiscountedPrice"
 import {calculateNumberOfNights} from "../../../utils/calculateNumberOfNights";
 import {calculatePerNightPrice} from "../../../utils/calculatePerNightPrice";
 import {calculateTotalPrice} from "../../../utils/calculateTotalPrice";
-import {SelectedProduct, SelectedRoom} from "../../../utils/types";
+import {SelectedProduct, SelectedRoom} from "../../../types";
 import Button from "../../button/Button";
 import TimeDropdown from "../../timeDropdown/TimeDropdown";
 import {useState} from "react";
@@ -57,7 +57,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
     totalPrice: 0,
   };
 
-  // put these methods as helper method for date formatting.
+  // TODO: put these methods as helper method for date formatting.
   const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
   const endDateFormatted = endDate ? (typeof endDate === "string" ? new Date(endDate) : endDate) : null;
 
@@ -76,12 +76,12 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
     dispatch(setStartDate(date));
   };
 
-  const handleEndDateChange = (date: any) => {
+  const handleEndDateChange = (date: Date) => {
     dispatch(setEndDate(date));
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     const newErrors: string[] = [];
 
     if (!startDate) newErrors.push("startDate");
@@ -94,16 +94,19 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
       return;
     }
 
-    const utcCheckInDate = toUtcFormat(startDate, startTime);
-    const utcCheckOutDate = toUtcFormat(endDate, endTime);
+    if (startDate && endDate && startTime && endTime) {
+      const utcCheckInDate = toUtcFormat(startDate, startTime);
+      const utcCheckOutDate = toUtcFormat(endDate, endTime);
 
-    dispatch(setUtcCheckInDateTime(utcCheckInDate));
-    dispatch(setUtcCheckOutDateTime(utcCheckOutDate));
+      dispatch(setUtcCheckInDateTime(utcCheckInDate));
+      dispatch(setUtcCheckOutDateTime(utcCheckOutDate));
+    } else {
+      console.error("CheckIn and CheckOut times must be provided.");
+    }
 
     if (startDate && endDate) {
-      let updatedRoom;
       if (selectedRoom) {
-        updatedRoom = {
+        const updatedRoom: SelectedRoom = {
           ...selectedRoom,
           discountedPrice: calculateDiscountedPrice(
             numberOfNights,
@@ -117,10 +120,8 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
             selectedRoom?.priceTaxPercentage
           ),
         };
+        dispatch(updateRoom(updatedRoom));
       }
-
-      // @ts-ignore
-      dispatch(updateRoom(updatedRoom));
 
       for (const selectedProduct of selectedProducts) {
         let updatedProduct;
@@ -194,7 +195,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
           <div className={styles.datePickerContainer}>
             <DatePicker
               selected={endDateFormatted}
-              onChange={(date: any) => handleEndDateChange(date)}
+              onChange={(date: Date) => handleEndDateChange(date)}
               selectsEnd
               startDate={startDateFormatted}
               endDate={endDateFormatted}

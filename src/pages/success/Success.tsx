@@ -3,7 +3,7 @@ import {useNavigate} from "react-router-dom";
 import Button from "../../components/button/Button";
 import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
 import {formatDate} from "../../utils/formatDate";
-import {BookingData, SelectedProduct} from "../../utils/types";
+import {BookingData, SelectedProduct} from "../../types";
 
 const Success = () => {
   const [formData, setFormData] = useState<BookingData>();
@@ -24,10 +24,9 @@ const Success = () => {
 
   const calculateGrandTotal = () => {
     const roomPrice = room?.discountedPrice ?? room?.totalPrice;
-    const totalProductPrices = products?.reduce((accumulator: any, product: any) => {
+    const totalProductPrices = products?.reduce((accumulator: any, product: SelectedProduct) => {
       return accumulator + product.totalPrice;
     }, 0);
-    // @ts-ignore
     return Number((roomPrice + totalProductPrices).toFixed(2));
   };
 
@@ -45,7 +44,6 @@ const Success = () => {
         <h3 className="sub-heading">Room Details</h3>
         <p>Name: {room?.name}</p>
         {/* @ts-ignore */}
-
         <p>Price per night: {calculatePerNightPrice(room?.pricePerNight, room?.priceTaxPercentage)}</p>
         <p>Number of nights: {room?.numberOfNights}</p>
         <p>Total Price: {room?.totalPrice}</p>

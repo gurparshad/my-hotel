@@ -3,7 +3,7 @@ import styles from "./button.module.scss";
 import classnames from "classnames";
 
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
-  onClick: any;
+  onClick: (event: any) => void;
   customClass?: string;
   type?: "button" | "submit" | "reset" | undefined;
 }

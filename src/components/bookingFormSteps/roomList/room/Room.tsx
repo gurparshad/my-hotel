@@ -1,4 +1,4 @@
-import {RoomType} from "../../../../utils/types";
+import {RoomType} from "../../../../types";
 import classnames from "classnames";
 import styles from "./room.module.scss";
 

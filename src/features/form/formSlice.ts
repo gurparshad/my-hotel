@@ -1,30 +1,41 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { ProductType, SelectedProduct, SelectedRoom } from '../../utils/types';
+import { ProductType, SelectedProduct, SelectedRoom } from '../../types';
 
 interface FormData {
   startDate: Date | null;
   endDate: Date | null;
-  startTime: string | null;
-  endTime: string | null;
-  room: SelectedRoom | null;
+  startTime: string;
+  endTime: string;
+  room: SelectedRoom;
   products: SelectedProduct[];
+  utcCheckInDateTime: string,
+  utcCheckOutDateTime: string,
 }
 
-interface RootState {
+interface FormState {
   currentStep: number;
-  formData: any;
+  formData: FormData;
 }
 
-const initialState: RootState = {
+const initialState: FormState = {
   currentStep: 1,
   formData: {
     startDate: null,
     endDate: null,
-    startTime: null,
-    endTime: null,
-    utcCheckInDateTime: null,
-    utcCheckOutDateTime: null,
-    room: null,
+    startTime: '',
+    endTime: '',
+    utcCheckInDateTime: '',
+    utcCheckOutDateTime: '',
+    room: {
+      id: 0,
+      image: '',
+      name: '',
+      pricePerNight: 0,
+      priceTaxPercentage: 0,
+      discountedPrice: 0,
+      numberOfNights: 0,
+      totalPrice: 0,
+    },
     products: [],
   },
 };
@@ -33,41 +44,39 @@ const formSlice = createSlice({
   name: 'form',
   initialState,
   reducers: {
-    setCurrentStep: (state, action) => {
+    setCurrentStep: (state: FormState, action: PayloadAction<number>) => {
       state.currentStep = action.payload;
     },
-    setStartDate: (state, action) => {
+    setStartDate: (state: FormState, action: PayloadAction<Date | null>) => {
       state.formData.startDate = action.payload;
     },
-    setEndDate: (state, action) => {
+    setEndDate: (state: FormState, action: PayloadAction<Date | null>) => {
       state.formData.endDate = action.payload;
     },
-    setStartTime: (state, action) => {
+    setStartTime: (state: FormState, action: PayloadAction<string>) => {
       state.formData.startTime = action.payload;
     },
-    setEndTime: (state, action) => {
+    setEndTime: (state: FormState, action: PayloadAction<string>) => {
       state.formData.endTime = action.payload;
     },
-    setUtcCheckInDateTime: (state, action) => {
+    setUtcCheckInDateTime: (state: FormState, action: PayloadAction<string>) => {
       state.formData.utcCheckInDateTime = action.payload;
     },
-    setUtcCheckOutDateTime: (state, action) => {
+    setUtcCheckOutDateTime: (state: FormState, action: PayloadAction<string>) => {
       state.formData.utcCheckOutDateTime = action.payload;
     },
-    setRoom: (state, action) => {
+    setRoom: (state: FormState, action: PayloadAction<SelectedRoom>) => {
       state.formData.room = action.payload;
     },
-    addProduct: (state, action: PayloadAction<ProductType>) => {
-      // @ts-ignore
+    addProduct: (state: FormState, action: PayloadAction<SelectedProduct>) => {
       state.formData.products.push(action.payload);
     },
-    removeProduct: (state, action: PayloadAction<ProductType>) => {
-      // @ts-ignore
+    removeProduct: (state: FormState, action: PayloadAction<ProductType>) => {
       state.formData.products = state.formData.products.filter(product => product.id !== action.payload.id);
     },
-    updateProduct: (state, action: PayloadAction<SelectedProduct>) => {
+    updateProduct: (state: FormState, action: PayloadAction<SelectedProduct>) => {
       const { id } = action.payload;
-      const updatedProducts = state.formData.products.map((product: any) => {
+      const updatedProducts = state.formData.products.map((product: SelectedProduct) => {
         if (product.id === id) {
           return {
             ...action.payload
@@ -77,12 +86,12 @@ const formSlice = createSlice({
       });
       state.formData.products = updatedProducts;
     },
-    updateRoom: (state, action: PayloadAction<SelectedRoom>) => {
+    updateRoom: (state: FormState, action: PayloadAction<SelectedRoom>) => {
       if (state.formData.room) {
         state.formData.room = { ...state.formData.room, ...action.payload };
       }
     },
-    resetForm: (state) => {
+    resetForm: (state: FormState) => {
       return initialState;
     },
   },

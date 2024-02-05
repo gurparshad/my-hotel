@@ -1,4 +1,7 @@
-export const calculateNumberOfNights = (startDate: Date, endDate: Date): number => {
+export const calculateNumberOfNights = (startDate: Date | null, endDate: Date | null): number => {
+  if (!startDate || !endDate) {
+    return 0;
+  }
   const numberOfMilliseconds = new Date(endDate).getTime() - new Date(startDate).getTime();
 
 
