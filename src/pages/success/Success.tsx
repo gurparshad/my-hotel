@@ -6,20 +6,20 @@ import {formatDate} from "../../utils/formatDate";
 import {BookingData, SelectedProduct} from "../../types";
 
 const Success = () => {
-  const [formData, setFormData] = useState<BookingData>();
+  const [data, setData] = useState<BookingData>();
 
   useEffect(() => {
     const bookingData = localStorage.getItem("bookingData");
     if (bookingData) {
       const parsedFormData = JSON.parse(bookingData);
-      setFormData(parsedFormData);
+      setData(parsedFormData);
     }
   }, []);
 
-  const startDate = formData?.utcCheckInDateTime;
-  const endDate = formData?.utcCheckOutDateTime;
-  const room = formData?.room;
-  const products = formData?.products;
+  const startDate = data?.utcCheckInDateTime;
+  const endDate = data?.utcCheckOutDateTime;
+  const room = data?.room;
+  const products = data?.products;
   const navigate = useNavigate();
 
   const calculateGrandTotal = () => {
@@ -35,10 +35,8 @@ const Success = () => {
       <h2>Booking successfull</h2>
       <h3>Summary of your order</h3>
       <div className="booking-detail">
-        {/* @ts-ignore */}
-        <p className="sub-heading">Check In: {formatDate(startDate)}</p>
-        {/* @ts-ignore */}
-        <p className="sub-heading">Check Out: {formatDate(endDate)}</p>
+        <p className="sub-heading">Check In: {formatDate(startDate ?? "")}</p>
+        <p className="sub-heading">Check Out: {formatDate(endDate ?? "")}</p>
       </div>
       <div className="room-details">
         <h3 className="sub-heading">Room Details</h3>

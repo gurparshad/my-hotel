@@ -20,7 +20,7 @@ const CreateBooking: React.FC<CreateBookingProps> = ({onBack}) => {
   const myHotelApi = new MyHotelApi();
 
   const formData = useAppSelector((state: RootState) => state.form.form.formData);
-  const {startDate, endDate, room, products} = formData;
+  const {room, products, utcCheckInDateTime, utcCheckOutDateTime} = formData;
 
   const calculateGrandTotal = () => {
     const roomPrice = room?.discountedPrice ?? room?.totalPrice;
@@ -53,8 +53,8 @@ const CreateBooking: React.FC<CreateBookingProps> = ({onBack}) => {
       <h2 className={styles.heading}>Booking Details</h2>
       <p>Please check your booking details below</p>
       <div className={styles.bookingDetail}>
-        <p className={styles.subHeading}>Check In: {formatDate(startDate)}</p>
-        <p className={styles.subHeading}>Check Out: {formatDate(endDate)}</p>
+        <p className={styles.subHeading}>Check In: {formatDate(utcCheckInDateTime)}</p>
+        <p className={styles.subHeading}>Check Out: {formatDate(utcCheckOutDateTime)}</p>
       </div>
       <div className={styles.roomDetails}>
         <h3 className={styles.subHeading}>Room Details</h3>
