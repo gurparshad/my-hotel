@@ -1,4 +1,3 @@
-import {lazy, Suspense} from "react";
 import {RoomType} from "../../../../utils/types";
 import classnames from "classnames";
 import styles from "./room.module.scss";
@@ -22,8 +21,6 @@ const Room: React.FC<RoomProps> = ({
   perNightPrice,
   onSelect,
 }) => {
-  const LazyImage = lazy(() => import("../../../lazyImage/LazyImage"));
-
   const totalPriceClass = classnames(styles.price, {
     [styles.strike]: discountedPrice !== 0,
   });
@@ -40,9 +37,7 @@ const Room: React.FC<RoomProps> = ({
   return (
     <div className={roomClasses} onClick={isAvailable ? handleClick : undefined}>
       <div className={styles.details}>
-        <Suspense fallback={<div>Loading...</div>}>
-          <LazyImage src={room.image} alt="room-image" />
-        </Suspense>
+        <img src={room.image} alt="room" />
         <p className={styles.name}>{room.name}</p>
         <p className={styles.price}>${perNightPrice}/night</p>
         <p className={totalPriceClass}>${totalPrice}</p>
