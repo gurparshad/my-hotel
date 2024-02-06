@@ -47,6 +47,7 @@ const formSlice = createSlice({
     setCurrentStep: (state: FormState, action: PayloadAction<number>) => {
       state.currentStep = action.payload;
     },
+    // TODO: The next 6 methods can be converted to 1 general method as they all accept a string, setField that will accept key and value payload
     setStartDate: (state: FormState, action: PayloadAction<string>) => {
       state.formData.startDate = action.payload;
     },
