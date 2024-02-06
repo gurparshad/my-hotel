@@ -16,7 +16,7 @@ import { calculateDiscountedPrice } from '../../../utils/calculateDiscountedPric
 import { calculateNumberOfNights } from '../../../utils/calculateNumberOfNights';
 import { calculatePerNightPrice } from '../../../utils/calculatePerNightPrice';
 import { calculateTotalPrice } from '../../../utils/calculateTotalPrice';
-import { SelectedRoom } from '../../../types';
+import { SelectedProduct, SelectedRoom } from '../../../types';
 import Button from '../../button/Button';
 import TimeDropdown from '../../timeDropdown/TimeDropdown';
 import { useState } from 'react';
@@ -25,6 +25,7 @@ import styles from './dateAndTime.module.scss';
 import { toUtcFormat } from '../../../utils/toUtcFormat';
 import Error from '../../error/Error';
 import data from '../../../data/data.json';
+import { checkRoomAvailability } from '../roomList/RoomList';
 
 interface DateAndTimeProps {
   onNext: () => void;
@@ -87,6 +88,72 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({ onNext }) => {
     dispatch(setEndDate(date.toISOString()));
   };
 
+  const updateRoomChanges = (room: SelectedRoom) => {
+    const isRoomAvailable = checkRoomAvailability(room.id, startDate, endDate);
+    let updatedRoom: SelectedRoom;
+    if (room && isRoomAvailable) {
+      updatedRoom = {
+        ...room,
+        discountedPrice: calculateDiscountedPrice(
+          numberOfNights,
+          room.pricePerNight,
+          room?.priceTaxPercentage,
+        ),
+        numberOfNights: numberOfNights,
+        totalPrice: calculateTotalPrice(
+          numberOfNights,
+          room?.pricePerNight,
+          room?.priceTaxPercentage,
+        ),
+      };
+    } else {
+      updatedRoom = {
+        id: 0,
+        image: '',
+        name: '',
+        pricePerNight: 0,
+        priceTaxPercentage: 0,
+        discountedPrice: 0,
+        numberOfNights: 0,
+        totalPrice: 0,
+      };
+    }
+    dispatch(updateRoom(updatedRoom));
+  };
+
+  const updateProducts = (products: SelectedProduct[]) => {
+    for (const selectedProduct of products) {
+      let updatedProduct;
+      if (selectedProduct.id === 1 && numberOfNights >= 28) {
+        updatedProduct = {
+          ...selectedProduct,
+          numberOfNights: numberOfNights,
+          totalPrice: 0,
+        };
+      } else if (selectedProduct.id === 3) {
+        updatedProduct = {
+          ...selectedProduct,
+          numberOfNights: numberOfNights,
+          totalPrice: calculatePerNightPrice(
+            selectedProduct.priceNet,
+            selectedProduct.priceTaxPercentage,
+          ),
+        };
+      } else {
+        updatedProduct = {
+          ...selectedProduct,
+          numberOfNights: numberOfNights,
+          totalPrice: calculateTotalPrice(
+            numberOfNights,
+            selectedProduct?.priceNet,
+            selectedProduct?.priceTaxPercentage,
+          ),
+        };
+      }
+      dispatch(updateProduct(updatedProduct));
+    }
+  };
+
   const handleNext = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const newErrors: string[] = [];
@@ -101,68 +168,16 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({ onNext }) => {
       return;
     }
 
-    if (startDate && endDate && startTime && endTime) {
-      const utcCheckInDate = toUtcFormat(startDate, startTime);
-      const utcCheckOutDate = toUtcFormat(endDate, endTime);
+    const utcCheckInDate = toUtcFormat(startDate, startTime);
+    const utcCheckOutDate = toUtcFormat(endDate, endTime);
+    dispatch(setUtcCheckInDateTime(utcCheckInDate));
+    dispatch(setUtcCheckOutDateTime(utcCheckOutDate));
 
-      dispatch(setUtcCheckInDateTime(utcCheckInDate));
-      dispatch(setUtcCheckOutDateTime(utcCheckOutDate));
-    } else {
-      console.error('CheckIn and CheckOut times must be provided.');
-    }
+    updateRoomChanges(room);
 
-    if (startDate && endDate) {
-      if (room) {
-        const updatedRoom: SelectedRoom = {
-          ...room,
-          discountedPrice: calculateDiscountedPrice(
-            numberOfNights,
-            room.pricePerNight,
-            room?.priceTaxPercentage,
-          ),
-          numberOfNights: numberOfNights,
-          totalPrice: calculateTotalPrice(
-            numberOfNights,
-            room?.pricePerNight,
-            room?.priceTaxPercentage,
-          ),
-        };
-        dispatch(updateRoom(updatedRoom));
-      }
+    updateProducts(products);
 
-      for (const selectedProduct of products) {
-        let updatedProduct;
-        if (selectedProduct.id === 1 && numberOfNights >= 28) {
-          updatedProduct = {
-            ...selectedProduct,
-            numberOfNights: numberOfNights,
-            totalPrice: 0,
-          };
-        } else if (selectedProduct.id === 3) {
-          updatedProduct = {
-            ...selectedProduct,
-            numberOfNights: numberOfNights,
-            totalPrice: calculatePerNightPrice(
-              selectedProduct.priceNet,
-              selectedProduct.priceTaxPercentage,
-            ),
-          };
-        } else {
-          updatedProduct = {
-            ...selectedProduct,
-            numberOfNights: numberOfNights,
-            totalPrice: calculateTotalPrice(
-              numberOfNights,
-              selectedProduct?.priceNet,
-              selectedProduct?.priceTaxPercentage,
-            ),
-          };
-        }
-        dispatch(updateProduct(updatedProduct));
-      }
-
-      onNext();
-    }
+    onNext();
   };
 
   return (

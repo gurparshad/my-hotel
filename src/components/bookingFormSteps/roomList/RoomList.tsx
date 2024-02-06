@@ -21,6 +21,27 @@ interface RoomListProps {
   onBack: () => void;
 }
 
+export const checkRoomAvailability = (
+  roomId: number,
+  utcCheckInDateTime: string,
+  utcCheckOutDateTime: string,
+) => {
+  for (const booking of bookings) {
+    if (
+      booking.roomId === roomId &&
+      ((utcCheckInDateTime <= booking.endDateUtc &&
+        utcCheckInDateTime >= booking.startDateUtc) ||
+        (utcCheckOutDateTime <= booking.endDateUtc &&
+          utcCheckOutDateTime >= booking.startDateUtc) ||
+        (utcCheckInDateTime <= booking.startDateUtc &&
+          utcCheckOutDateTime >= booking.endDateUtc))
+    ) {
+      return false;
+    }
+  }
+  return true;
+};
+
 const RoomList: React.FC<RoomListProps> = ({ onNext, onBack }) => {
   const dispatch = useAppDispatch();
   const [error, setError] = useState<boolean>(false);
@@ -30,23 +51,6 @@ const RoomList: React.FC<RoomListProps> = ({ onNext, onBack }) => {
   let discountedPrice = 0;
   let totalPrice = 0;
   const numberOfNights = calculateNumberOfNights(startDate, endDate);
-
-  const checkRoomAvailability = (roomId: number) => {
-    for (const booking of bookings) {
-      if (
-        booking.roomId === roomId &&
-        ((utcCheckInDateTime <= booking.endDateUtc &&
-          utcCheckInDateTime >= booking.startDateUtc) ||
-          (utcCheckOutDateTime <= booking.endDateUtc &&
-            utcCheckOutDateTime >= booking.startDateUtc) ||
-          (utcCheckInDateTime <= booking.startDateUtc &&
-            utcCheckOutDateTime >= booking.endDateUtc))
-      ) {
-        return false;
-      }
-    }
-    return true;
-  };
 
   const handleDiscountedPrice = (room: RoomType) => {
     if (numberOfNights >= 3) {
@@ -106,7 +110,11 @@ const RoomList: React.FC<RoomListProps> = ({ onNext, onBack }) => {
             )}
             onSelect={handleRoomSelect}
             isSelected={room ? room.id === item.id : false}
-            isAvailable={checkRoomAvailability(item.id)}
+            isAvailable={checkRoomAvailability(
+              item.id,
+              utcCheckInDateTime,
+              utcCheckOutDateTime,
+            )}
             discountedPrice={handleDiscountedPrice(item)}
             totalPrice={handleTotalPrice(item)}
           />
