@@ -50,7 +50,7 @@ const Room: React.FC<RoomProps> = ({
           )}
           <p>Total</p>
         </div>
-        {!isAvailable && <p style={{ color: 'red' }}>Not avialable</p>}
+        {!isAvailable && <p style={{ color: 'red' }}>Not Available</p>}
       </div>
     </div>
   );

@@ -106,7 +106,7 @@ const RoomList: React.FC<RoomListProps> = ({ onNext, onBack }) => {
             )}
             onSelect={handleRoomSelect}
             isSelected={room ? room.id === item.id : false}
-            isAvailable={checkRoomAvailability(room.id)}
+            isAvailable={checkRoomAvailability(item.id)}
             discountedPrice={handleDiscountedPrice(item)}
             totalPrice={handleTotalPrice(item)}
           />
