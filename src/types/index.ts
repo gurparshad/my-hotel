@@ -4,7 +4,7 @@ export interface ProductType {
   priceNet: number;
   priceTaxPercentage: number;
   chargeMethod: string;
-  image: string
+  image: string;
 }
 
 export interface RoomType {
@@ -12,7 +12,7 @@ export interface RoomType {
   name: string;
   pricePerNightNet: number;
   priceTaxPercentage: number;
-  image: string
+  image: string;
 }
 
 export interface Booking {

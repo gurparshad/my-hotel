@@ -8,8 +8,8 @@ interface FormData {
   endTime: string;
   room: SelectedRoom;
   products: SelectedProduct[];
-  utcCheckInDateTime: string,
-  utcCheckOutDateTime: string,
+  utcCheckInDateTime: string;
+  utcCheckOutDateTime: string;
 }
 
 interface FormState {
@@ -59,10 +59,16 @@ const formSlice = createSlice({
     setEndTime: (state: FormState, action: PayloadAction<string>) => {
       state.formData.endTime = action.payload;
     },
-    setUtcCheckInDateTime: (state: FormState, action: PayloadAction<string>) => {
+    setUtcCheckInDateTime: (
+      state: FormState,
+      action: PayloadAction<string>,
+    ) => {
       state.formData.utcCheckInDateTime = action.payload;
     },
-    setUtcCheckOutDateTime: (state: FormState, action: PayloadAction<string>) => {
+    setUtcCheckOutDateTime: (
+      state: FormState,
+      action: PayloadAction<string>,
+    ) => {
       state.formData.utcCheckOutDateTime = action.payload;
     },
     setRoom: (state: FormState, action: PayloadAction<SelectedRoom>) => {
@@ -72,18 +78,25 @@ const formSlice = createSlice({
       state.formData.products.push(action.payload);
     },
     removeProduct: (state: FormState, action: PayloadAction<ProductType>) => {
-      state.formData.products = state.formData.products.filter(product => product.id !== action.payload.id);
+      state.formData.products = state.formData.products.filter(
+        (product) => product.id !== action.payload.id,
+      );
     },
-    updateProduct: (state: FormState, action: PayloadAction<SelectedProduct>) => {
+    updateProduct: (
+      state: FormState,
+      action: PayloadAction<SelectedProduct>,
+    ) => {
       const { id } = action.payload;
-      const updatedProducts = state.formData.products.map((product: SelectedProduct) => {
-        if (product.id === id) {
-          return {
-            ...action.payload
-          };
-        }
-        return product;
-      });
+      const updatedProducts = state.formData.products.map(
+        (product: SelectedProduct) => {
+          if (product.id === id) {
+            return {
+              ...action.payload,
+            };
+          }
+          return product;
+        },
+      );
       state.formData.products = updatedProducts;
     },
     updateRoom: (state: FormState, action: PayloadAction<SelectedRoom>) => {
@@ -97,6 +110,20 @@ const formSlice = createSlice({
   },
 });
 
-export const { setCurrentStep, setStartDate, setEndDate, setStartTime, setEndTime, setRoom, updateRoom, addProduct, removeProduct, updateProduct, setUtcCheckInDateTime, setUtcCheckOutDateTime, resetForm } = formSlice.actions;
+export const {
+  setCurrentStep,
+  setStartDate,
+  setEndDate,
+  setStartTime,
+  setEndTime,
+  setRoom,
+  updateRoom,
+  addProduct,
+  removeProduct,
+  updateProduct,
+  setUtcCheckInDateTime,
+  setUtcCheckOutDateTime,
+  resetForm,
+} = formSlice.actions;
 
 export default formSlice.reducer;

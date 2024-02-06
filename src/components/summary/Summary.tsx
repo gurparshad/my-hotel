@@ -1,20 +1,24 @@
-import {BookingData, SelectedProduct} from "../../types";
-import {calculatePerNightPrice} from "../../utils/calculatePerNightPrice";
-import {formatDate} from "../../utils/formatDate";
-import styles from "./summary.module.scss";
+import { BookingData, SelectedProduct } from '../../types';
+import { calculatePerNightPrice } from '../../utils/calculatePerNightPrice';
+import { formatDate } from '../../utils/formatDate';
+import styles from './summary.module.scss';
 
 interface SummaryProps {
   data: BookingData;
 }
 
-const Summary: React.FC<SummaryProps> = ({data}) => {
-  const {room, products, utcCheckInDateTime, utcCheckOutDateTime} = data;
+const Summary: React.FC<SummaryProps> = ({ data }) => {
+  const { room, products, utcCheckInDateTime, utcCheckOutDateTime } = data;
 
   const calculateGrandTotal = () => {
-    const roomPrice = room.discountedPrice === 0 ? room.totalPrice : room.discountedPrice;
-    const totalProductPrices = products.reduce((accumulator: number, product: SelectedProduct) => {
-      return accumulator + product.totalPrice;
-    }, 0);
+    const roomPrice =
+      room.discountedPrice === 0 ? room.totalPrice : room.discountedPrice;
+    const totalProductPrices = products.reduce(
+      (accumulator: number, product: SelectedProduct) => {
+        return accumulator + product.totalPrice;
+      },
+      0,
+    );
     return Number((roomPrice + totalProductPrices).toFixed(2));
   };
 
@@ -42,7 +46,13 @@ const Summary: React.FC<SummaryProps> = ({data}) => {
           </tr>
           <tr>
             <td className={styles.label}>Price per night:</td>
-            <td>{calculatePerNightPrice(room?.pricePerNight, room?.priceTaxPercentage)}</td>
+            <td>
+              $
+              {calculatePerNightPrice(
+                room?.pricePerNight,
+                room?.priceTaxPercentage,
+              )}
+            </td>
           </tr>
           <tr>
             <td className={styles.label}>Number of nights:</td>
@@ -50,12 +60,12 @@ const Summary: React.FC<SummaryProps> = ({data}) => {
           </tr>
           <tr>
             <td className={styles.label}>Total Price:</td>
-            <td>{room?.totalPrice}</td>
+            <td>${room?.totalPrice}</td>
           </tr>
           {room?.discountedPrice !== 0 && (
             <tr>
               <td className={styles.label}>Discounted Price:</td>
-              <td>{room?.discountedPrice}</td>
+              <td>${room?.discountedPrice}</td>
             </tr>
           )}
         </tbody>
@@ -75,18 +85,27 @@ const Summary: React.FC<SummaryProps> = ({data}) => {
               {products.map((item: SelectedProduct) => (
                 <tr key={item.id}>
                   <td>{item.name}</td>
-                  <td>{calculatePerNightPrice(item.priceNet, item.priceTaxPercentage)}</td>
-                  <td>{item.totalPrice}</td>
+                  <td>
+                    $
+                    {calculatePerNightPrice(
+                      item.priceNet,
+                      item.priceTaxPercentage,
+                    )}
+                  </td>
+                  <td>${item.totalPrice}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
       )}
-      <p className={styles.taxDisclaimer}>*Tax is included in the prices mentioned.</p>
+      <p className={styles.taxDisclaimer}>
+        *Tax is included in the prices mentioned.
+      </p>
       <div className={styles.grandTotal}>
         <p>
-          <span className={styles.bold}>Grand Total:</span> ${calculateGrandTotal()}
+          <span className={styles.bold}>Grand Total:</span> $
+          {calculateGrandTotal()}
         </p>
       </div>
     </div>

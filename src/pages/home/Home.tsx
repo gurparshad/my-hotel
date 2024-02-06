@@ -1,11 +1,11 @@
-import {useNavigate} from "react-router-dom";
-import Button from "../../components/button/Button";
-import styles from "./home.module.scss";
+import { useNavigate } from 'react-router-dom';
+import Button from '../../components/button/Button';
+import styles from './home.module.scss';
 
 const Home: React.FC = () => {
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/book-room");
+    navigate('/book-room');
   };
   return (
     <div className={styles.home}>

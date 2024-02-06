@@ -1,17 +1,17 @@
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {RoomType} from "../../../types";
-import {calculatePerNightPrice} from "../../../utils/calculatePerNightPrice";
-import {calculateTotalPrice} from "../../../utils/calculateTotalPrice";
-import {calculateDiscountedPrice} from "../../../utils/calculateDiscountedPrice";
-import {calculateNumberOfNights} from "../../../utils/calculateNumberOfNights";
-import {setRoom} from "../../../features/form/formSlice";
-import {RootState} from "../../../app/store";
-import Button from "../../button/Button";
-import data from "../../../data/data.json";
-import Room from "./room/Room";
-import {useState} from "react";
-import styles from "./roomList.module.scss";
-import Error from "../../error/Error";
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { RoomType } from '../../../types';
+import { calculatePerNightPrice } from '../../../utils/calculatePerNightPrice';
+import { calculateTotalPrice } from '../../../utils/calculateTotalPrice';
+import { calculateDiscountedPrice } from '../../../utils/calculateDiscountedPrice';
+import { calculateNumberOfNights } from '../../../utils/calculateNumberOfNights';
+import { setRoom } from '../../../features/form/formSlice';
+import { RootState } from '../../../app/store';
+import Button from '../../button/Button';
+import data from '../../../data/data.json';
+import Room from './room/Room';
+import { useState } from 'react';
+import styles from './roomList.module.scss';
+import Error from '../../error/Error';
 
 const rooms = data.rooms.data;
 const bookings = data.bookings.data;
@@ -21,12 +21,11 @@ interface RoomListProps {
   onBack: () => void;
 }
 
-const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
+const RoomList: React.FC<RoomListProps> = ({ onNext, onBack }) => {
   const dispatch = useAppDispatch();
   const [error, setError] = useState<Boolean>(false);
-  const {room, startDate, endDate, utcCheckInDateTime, utcCheckOutDateTime} = useAppSelector(
-    (state: RootState) => state.form.form.formData
-  );
+  const { room, startDate, endDate, utcCheckInDateTime, utcCheckOutDateTime } =
+    useAppSelector((state: RootState) => state.form.form.formData);
 
   let discountedPrice = 0;
   let totalPrice = 0;
@@ -36,9 +35,12 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
     for (const booking of bookings) {
       if (
         booking.roomId === roomId &&
-        ((utcCheckInDateTime <= booking.endDateUtc && utcCheckInDateTime >= booking.startDateUtc) ||
-          (utcCheckOutDateTime <= booking.endDateUtc && utcCheckOutDateTime >= booking.startDateUtc) ||
-          (utcCheckInDateTime <= booking.startDateUtc && utcCheckOutDateTime >= booking.endDateUtc))
+        ((utcCheckInDateTime <= booking.endDateUtc &&
+          utcCheckInDateTime >= booking.startDateUtc) ||
+          (utcCheckOutDateTime <= booking.endDateUtc &&
+            utcCheckOutDateTime >= booking.startDateUtc) ||
+          (utcCheckInDateTime <= booking.startDateUtc &&
+            utcCheckOutDateTime >= booking.endDateUtc))
       ) {
         return false;
       }
@@ -48,7 +50,11 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
 
   const handleDiscountedPrice = (room: RoomType) => {
     if (numberOfNights >= 3) {
-      discountedPrice = calculateDiscountedPrice(numberOfNights, room.pricePerNightNet, room.priceTaxPercentage);
+      discountedPrice = calculateDiscountedPrice(
+        numberOfNights,
+        room.pricePerNightNet,
+        room.priceTaxPercentage,
+      );
       return discountedPrice;
     } else {
       return 0;
@@ -56,7 +62,11 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
   };
 
   const handleTotalPrice = (room: RoomType) => {
-    totalPrice = calculateTotalPrice(numberOfNights, room.pricePerNightNet, room.priceTaxPercentage);
+    totalPrice = calculateTotalPrice(
+      numberOfNights,
+      room.pricePerNightNet,
+      room.priceTaxPercentage,
+    );
     return totalPrice;
   };
 
@@ -90,7 +100,10 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
           <Room
             key={item.id}
             room={item}
-            perNightPrice={calculatePerNightPrice(item.pricePerNightNet, item.priceTaxPercentage)}
+            perNightPrice={calculatePerNightPrice(
+              item.pricePerNightNet,
+              item.priceTaxPercentage,
+            )}
             onSelect={handleRoomSelect}
             isSelected={room ? room.id === item.id : false}
             isAvailable={checkRoomAvailability(room.id)}
@@ -99,7 +112,12 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
           />
         ))}
 
-        {error && <Error customClass={styles.roomError} message="Please select a room" />}
+        {error && (
+          <Error
+            customClass={styles.roomError}
+            message="Please select a room"
+          />
+        )}
       </div>
       <div className={styles.buttonsContainer}>
         <Button onClick={onBack}>Back</Button>

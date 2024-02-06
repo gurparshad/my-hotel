@@ -1,6 +1,6 @@
-import DatePicker from "react-datepicker";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {RootState} from "../../../app/store";
+import DatePicker from 'react-datepicker';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { RootState } from '../../../app/store';
 import {
   updateProduct,
   setEndDate,
@@ -11,43 +11,53 @@ import {
   addProduct,
   setUtcCheckInDateTime,
   setUtcCheckOutDateTime,
-} from "../../../features/form/formSlice";
-import {calculateDiscountedPrice} from "../../../utils/calculateDiscountedPrice";
-import {calculateNumberOfNights} from "../../../utils/calculateNumberOfNights";
-import {calculatePerNightPrice} from "../../../utils/calculatePerNightPrice";
-import {calculateTotalPrice} from "../../../utils/calculateTotalPrice";
-import {SelectedRoom} from "../../../types";
-import Button from "../../button/Button";
-import TimeDropdown from "../../timeDropdown/TimeDropdown";
-import {useState} from "react";
-import "react-datepicker/dist/react-datepicker.css";
-import styles from "./dateAndTime.module.scss";
-import {toUtcFormat} from "../../../utils/toUtcFormat";
-import Error from "../../error/Error";
-import data from "../../../data/data.json";
+} from '../../../features/form/formSlice';
+import { calculateDiscountedPrice } from '../../../utils/calculateDiscountedPrice';
+import { calculateNumberOfNights } from '../../../utils/calculateNumberOfNights';
+import { calculatePerNightPrice } from '../../../utils/calculatePerNightPrice';
+import { calculateTotalPrice } from '../../../utils/calculateTotalPrice';
+import { SelectedRoom } from '../../../types';
+import Button from '../../button/Button';
+import TimeDropdown from '../../timeDropdown/TimeDropdown';
+import { useState } from 'react';
+import 'react-datepicker/dist/react-datepicker.css';
+import styles from './dateAndTime.module.scss';
+import { toUtcFormat } from '../../../utils/toUtcFormat';
+import Error from '../../error/Error';
+import data from '../../../data/data.json';
 
 interface DateAndTimeProps {
   onNext: () => void;
 }
 
-const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
+const DateAndTime: React.FC<DateAndTimeProps> = ({ onNext }) => {
   const dispatch = useAppDispatch();
   const [errors, setErrors] = useState<string[]>([]);
-  const {startTimesLocal, endTimesLocal} = data.property;
+  const { startTimesLocal, endTimesLocal } = data.property;
 
-  const formData = useAppSelector((state: RootState) => state.form.form.formData);
-  const {room, startDate, endDate, startTime, endTime, products} = formData;
-  const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
-  const endDateFormatted = endDate ? (typeof endDate === "string" ? new Date(endDate) : endDate) : null;
+  const formData = useAppSelector(
+    (state: RootState) => state.form.form.formData,
+  );
+  const { room, startDate, endDate, startTime, endTime, products } = formData;
+  const startDateFormatted = startDate
+    ? typeof startDate === 'string'
+      ? new Date(startDate)
+      : startDate
+    : null;
+  const endDateFormatted = endDate
+    ? typeof endDate === 'string'
+      ? new Date(endDate)
+      : endDate
+    : null;
   const numberOfNights = calculateNumberOfNights(startDate, endDate);
 
   const breakfast = {
     id: 1,
-    name: "Breakfast",
+    name: 'Breakfast',
     priceNet: 6,
     priceTaxPercentage: 0.09,
-    chargeMethod: "nightly",
-    image: "https://via.placeholder.com/400x200.png?text=Breakfast",
+    chargeMethod: 'nightly',
+    image: 'https://via.placeholder.com/400x200.png?text=Breakfast',
     numberOfNights: numberOfNights,
     totalPrice: 0,
   };
@@ -68,7 +78,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
 
   const handleStartDateChange = (date: Date) => {
     if (endDateFormatted && date > endDateFormatted) {
-      dispatch(setEndDate(""));
+      dispatch(setEndDate(''));
     }
     dispatch(setStartDate(date.toISOString()));
   };
@@ -81,11 +91,11 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
     event.preventDefault();
     const newErrors: string[] = [];
 
-    if (!startDate) newErrors.push("startDate");
-    if (!endDate) newErrors.push("endDate");
-    if (!startTime) newErrors.push("startTime");
-    if (!endTime) newErrors.push("endTime");
-    if (numberOfNights < 1) newErrors.push("minimumNights");
+    if (!startDate) newErrors.push('startDate');
+    if (!endDate) newErrors.push('endDate');
+    if (!startTime) newErrors.push('startTime');
+    if (!endTime) newErrors.push('endTime');
+    if (numberOfNights < 1) newErrors.push('minimumNights');
     if (newErrors.length > 0) {
       setErrors(newErrors);
       return;
@@ -98,16 +108,24 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
       dispatch(setUtcCheckInDateTime(utcCheckInDate));
       dispatch(setUtcCheckOutDateTime(utcCheckOutDate));
     } else {
-      console.error("CheckIn and CheckOut times must be provided.");
+      console.error('CheckIn and CheckOut times must be provided.');
     }
 
     if (startDate && endDate) {
       if (room) {
         const updatedRoom: SelectedRoom = {
           ...room,
-          discountedPrice: calculateDiscountedPrice(numberOfNights, room.pricePerNight, room?.priceTaxPercentage),
+          discountedPrice: calculateDiscountedPrice(
+            numberOfNights,
+            room.pricePerNight,
+            room?.priceTaxPercentage,
+          ),
           numberOfNights: numberOfNights,
-          totalPrice: calculateTotalPrice(numberOfNights, room?.pricePerNight, room?.priceTaxPercentage),
+          totalPrice: calculateTotalPrice(
+            numberOfNights,
+            room?.pricePerNight,
+            room?.priceTaxPercentage,
+          ),
         };
         dispatch(updateRoom(updatedRoom));
       }
@@ -124,7 +142,10 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
           updatedProduct = {
             ...selectedProduct,
             numberOfNights: numberOfNights,
-            totalPrice: calculatePerNightPrice(selectedProduct.priceNet, selectedProduct.priceTaxPercentage),
+            totalPrice: calculatePerNightPrice(
+              selectedProduct.priceNet,
+              selectedProduct.priceTaxPercentage,
+            ),
           };
         } else {
           updatedProduct = {
@@ -133,7 +154,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
             totalPrice: calculateTotalPrice(
               numberOfNights,
               selectedProduct?.priceNet,
-              selectedProduct?.priceTaxPercentage
+              selectedProduct?.priceTaxPercentage,
             ),
           };
         }
@@ -161,15 +182,19 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
               className={styles.datePicker}
               placeholderText="Date"
             />
-            {errors.includes("startDate") && <Error message="Please select a check-in date" />}
+            {errors.includes('startDate') && (
+              <Error message="Please select a check-in date" />
+            )}
           </div>
           <div className={styles.timePickerContainer}>
             <TimeDropdown
-              value={startTime ?? ""}
+              value={startTime ?? ''}
               times={startTimesLocal}
               onChange={(time: string) => handleStartTime(time)}
             />
-            {errors.includes("startTime") && <Error message="Please select a check-in time" />}
+            {errors.includes('startTime') && (
+              <Error message="Please select a check-in time" />
+            )}
           </div>
         </div>
 
@@ -187,23 +212,31 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
               className={styles.datePicker}
               placeholderText="Date"
             />
-            {errors.includes("endDate") && <Error message="Please select an end date" />}
+            {errors.includes('endDate') && (
+              <Error message="Please select an end date" />
+            )}
           </div>
           <div className={styles.timePickerContainer}>
             <TimeDropdown
-              value={endTime ?? ""}
+              value={endTime ?? ''}
               times={endTimesLocal}
               onChange={(time: string) => handleEndTime(time)}
             />
-            {errors.includes("endTime") && <Error message="Please select a checkout time" />}
+            {errors.includes('endTime') && (
+              <Error message="Please select a checkout time" />
+            )}
           </div>
         </div>
-        {errors.includes("minimumNights") && (
+        {errors.includes('minimumNights') && (
           <div className={styles.errorContainer}>
             <Error message="Booking is possible for minimum 1 night" />
           </div>
         )}
-        <Button onClick={handleSubmit} type="submit" customClass={styles.button}>
+        <Button
+          onClick={handleSubmit}
+          type="submit"
+          customClass={styles.button}
+        >
           Next
         </Button>
       </form>

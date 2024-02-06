@@ -1,33 +1,39 @@
-import React from "react";
-import {ProductType} from "../../../types";
-import Button from "../../button/Button";
-import Product from "./product/Product";
-import data from "../../../data/data.json";
-import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {RootState} from "../../../app/store";
-import {addProduct, removeProduct} from "../../../features/form/formSlice";
-import {calculateNumberOfNights} from "../../../utils/calculateNumberOfNights";
-import {calculateTotalPrice} from "../../../utils/calculateTotalPrice";
-import {calculatePerNightPrice} from "../../../utils/calculatePerNightPrice";
-import styles from "./productList.module.scss";
+import React from 'react';
+import { ProductType } from '../../../types';
+import Button from '../../button/Button';
+import Product from './product/Product';
+import data from '../../../data/data.json';
+import { useAppDispatch, useAppSelector } from '../../../app/hooks';
+import { RootState } from '../../../app/store';
+import { addProduct, removeProduct } from '../../../features/form/formSlice';
+import { calculateNumberOfNights } from '../../../utils/calculateNumberOfNights';
+import { calculateTotalPrice } from '../../../utils/calculateTotalPrice';
+import { calculatePerNightPrice } from '../../../utils/calculatePerNightPrice';
+import styles from './productList.module.scss';
 
 interface ProductListProps {
   onNext: () => void;
   onBack: () => void;
 }
 
-const ProductList: React.FC<ProductListProps> = ({onNext, onBack}) => {
+const ProductList: React.FC<ProductListProps> = ({ onNext, onBack }) => {
   const products = data.products.data;
   const dispatch = useAppDispatch();
 
-  const {startDate, endDate} = useAppSelector((state: RootState) => state.form.form.formData);
+  const { startDate, endDate } = useAppSelector(
+    (state: RootState) => state.form.form.formData,
+  );
   const numberOfNights = calculateNumberOfNights(startDate, endDate);
 
   const selectedProductIds = useAppSelector((state: RootState) =>
-    state.form.form.formData.products.map((product: ProductType) => product.id)
+    state.form.form.formData.products.map((product: ProductType) => product.id),
   );
 
-  const handleTotalPrice = (productId: number, netPrice: number, tax: number) => {
+  const handleTotalPrice = (
+    productId: number,
+    netPrice: number,
+    tax: number,
+  ) => {
     if (productId === 3) {
       return calculatePerNightPrice(netPrice, tax);
     } else {
@@ -43,7 +49,11 @@ const ProductList: React.FC<ProductListProps> = ({onNext, onBack}) => {
       priceTaxPercentage: product.priceTaxPercentage,
       chargeMethod: product.chargeMethod,
       image: product.image,
-      totalPrice: handleTotalPrice(product.id, product.priceNet, product.priceTaxPercentage),
+      totalPrice: handleTotalPrice(
+        product.id,
+        product.priceNet,
+        product.priceTaxPercentage,
+      ),
       numberOfNights: numberOfNights,
     };
     if (selectedProductIds.includes(product.id)) {

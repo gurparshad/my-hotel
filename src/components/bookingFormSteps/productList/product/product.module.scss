@@ -29,7 +29,7 @@
   .details {
     display: flex;
     flex-direction: column;
-    align-items:flex-start;
+    align-items: flex-start;
     margin-top: 8px;
     gap: 5px;
   }
@@ -48,7 +48,7 @@
     color: #666;
   }
 
-  input[type="checkbox"] {
+  input[type='checkbox'] {
     cursor: pointer;
     transform: scale(1.5);
   }

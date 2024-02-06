@@ -1,11 +1,11 @@
-import axios, { AxiosError, AxiosInstance, AxiosResponse } from "axios";
-import { BookingData } from "./types";
+import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios';
+import { BookingData } from './types';
 
 export class MyHotelApi {
   private client: AxiosInstance;
 
   private routes = {
-    SUBMIT_BOOKING: "",
+    SUBMIT_BOOKING: '',
   };
 
   private handleRequest = async (request: Promise<AxiosResponse<any>>) =>
@@ -41,12 +41,12 @@ export class MyHotelApi {
   public submitBooking = async (bookingData: BookingData) => {
     try {
       const response = await this.handleRequest(
-        this.client.post(this.routes.SUBMIT_BOOKING, bookingData)
+        this.client.post(this.routes.SUBMIT_BOOKING, bookingData),
       );
       return response;
     } catch (error) {
       console.error('Error submitting booking:', error);
       throw error;
     }
-  }
+  };
 }

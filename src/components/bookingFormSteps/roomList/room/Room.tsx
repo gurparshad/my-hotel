@@ -1,6 +1,6 @@
-import {RoomType} from "../../../../types";
-import classnames from "classnames";
-import styles from "./room.module.scss";
+import { RoomType } from '../../../../types';
+import classnames from 'classnames';
+import styles from './room.module.scss';
 
 interface RoomProps {
   room: RoomType;
@@ -35,17 +35,22 @@ const Room: React.FC<RoomProps> = ({
   };
 
   return (
-    <div className={roomClasses} onClick={isAvailable ? handleClick : undefined}>
+    <div
+      className={roomClasses}
+      onClick={isAvailable ? handleClick : undefined}
+    >
       <div className={styles.details}>
         <img src={room.image} alt="room" />
         <p className={styles.name}>{room.name}</p>
         <p className={styles.price}>${perNightPrice}/night</p>
         <div className={styles.totalPrice}>
           <p className={totalPriceClass}>${totalPrice}</p>
-          {discountedPrice !== 0 && <p className={styles.price}>${discountedPrice}</p>}
+          {discountedPrice !== 0 && (
+            <p className={styles.price}>${discountedPrice}</p>
+          )}
           <p>Total</p>
         </div>
-        {!isAvailable && <p style={{color: "red"}}>Not avialable</p>}
+        {!isAvailable && <p style={{ color: 'red' }}>Not avialable</p>}
       </div>
     </div>
   );

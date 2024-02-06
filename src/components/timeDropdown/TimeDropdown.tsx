@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import styles from "./timeDropdown.module.scss";
+import React, { useState } from 'react';
+import styles from './timeDropdown.module.scss';
 
 interface TimeDropdownProps {
   times: string[];
@@ -7,7 +7,11 @@ interface TimeDropdownProps {
   value: string;
 }
 
-const TimeDropdown: React.FC<TimeDropdownProps> = ({times, onChange, value}) => {
+const TimeDropdown: React.FC<TimeDropdownProps> = ({
+  times,
+  onChange,
+  value,
+}) => {
   const [selectedTime, setSelectedTime] = useState<string>(value);
 
   const handleTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -16,7 +20,11 @@ const TimeDropdown: React.FC<TimeDropdownProps> = ({times, onChange, value}) => 
   };
 
   return (
-    <select className={styles.timeDropDown} value={selectedTime} onChange={handleTimeChange}>
+    <select
+      className={styles.timeDropDown}
+      value={selectedTime}
+      onChange={handleTimeChange}
+    >
       <option value="">Select Time</option>
       {times.map((time, index) => (
         <option key={index} value={time}>

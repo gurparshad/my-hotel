@@ -11,4 +11,4 @@ export const formatDate = (date: string): string => {
   const formattedStartDate = `${day} ${month} ${year} ${hours}:${minutes}`;
 
   return formattedStartDate;
-}
+};

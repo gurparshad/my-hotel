@@ -1,7 +1,7 @@
 export const toUtcFormat = (date: string, time: string) => {
   const localDate = new Date(date);
 
-  const [hour, minute] = time.split(":").map(part => parseInt(part));
+  const [hour, minute] = time.split(':').map((part) => parseInt(part));
 
   localDate.setMinutes(localDate.getMinutes() - localDate.getTimezoneOffset());
   localDate.setHours(hour);

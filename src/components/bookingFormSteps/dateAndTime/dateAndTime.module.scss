@@ -12,14 +12,14 @@
   position: relative;
 }
 
-.timePickerContainer{
+.timePickerContainer {
   display: flex;
   flex-direction: column;
   text-align: left;
   position: relative;
 }
 
-.checkInContainer{
+.checkInContainer {
   display: flex;
   justify-content: center;
   align-items: baseline;
@@ -27,7 +27,7 @@
   margin-bottom: 30px;
 }
 
-.checkOutContainer{
+.checkOutContainer {
   display: flex;
   justify-content: center;
   align-items: baseline;
@@ -47,7 +47,7 @@
   top: 0;
 }
 
-.errorContainer{
+.errorContainer {
   position: relative;
   display: flex;
   justify-content: center;
@@ -57,6 +57,6 @@
   position: absolute;
 }
 
-.button{
+.button {
   margin-top: 60px;
 }
