@@ -20,8 +20,7 @@ const ProductList: React.FC<ProductListProps> = ({onNext, onBack}) => {
   const products = data.products.data;
   const dispatch = useAppDispatch();
 
-  const startDate = useAppSelector((state: RootState) => state.form.form.formData.startDate);
-  const endDate = useAppSelector((state: RootState) => state.form.form.formData.endDate);
+  const {startDate, endDate} = useAppSelector((state: RootState) => state.form.form.formData);
   const numberOfNights = calculateNumberOfNights(startDate, endDate);
 
   const selectedProductIds = useAppSelector((state: RootState) =>
@@ -62,8 +61,8 @@ const ProductList: React.FC<ProductListProps> = ({onNext, onBack}) => {
             key={product.id}
             product={product}
             isSelected={selectedProductIds.includes(product.id)}
-            onCardClick={handleCardClick}
             isFree={numberOfNights >= 28 && product.id === 1}
+            onCardClick={handleCardClick}
           />
         ))}
       </div>

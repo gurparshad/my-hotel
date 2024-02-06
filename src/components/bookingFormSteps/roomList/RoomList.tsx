@@ -1,5 +1,5 @@
 import {useAppDispatch, useAppSelector} from "../../../app/hooks";
-import {RoomType, SelectedRoom} from "../../../types";
+import {RoomType} from "../../../types";
 import {calculatePerNightPrice} from "../../../utils/calculatePerNightPrice";
 import {calculateTotalPrice} from "../../../utils/calculateTotalPrice";
 import {calculateDiscountedPrice} from "../../../utils/calculateDiscountedPrice";
@@ -24,12 +24,9 @@ interface RoomListProps {
 const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
   const dispatch = useAppDispatch();
   const [error, setError] = useState<Boolean>(false);
-  const selectedRoom: SelectedRoom | null = useAppSelector((state: RootState) => state.form.form.formData.room);
-  const startDate = useAppSelector((state: RootState) => state.form.form.formData.startDate);
-  const endDate = useAppSelector((state: RootState) => state.form.form.formData.endDate);
-
-  const utcCheckInDate = useAppSelector((state: RootState) => state.form.form.formData.utcCheckInDateTime);
-  const utcCheckOutDate = useAppSelector((state: RootState) => state.form.form.formData.utcCheckOutDateTime);
+  const {room, startDate, endDate, utcCheckInDateTime, utcCheckOutDateTime} = useAppSelector(
+    (state: RootState) => state.form.form.formData
+  );
 
   let discountedPrice = 0;
   let totalPrice = 0;
@@ -39,9 +36,9 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
     for (const booking of bookings) {
       if (
         booking.roomId === roomId &&
-        ((utcCheckInDate <= booking.endDateUtc && utcCheckInDate >= booking.startDateUtc) ||
-          (utcCheckOutDate <= booking.endDateUtc && utcCheckOutDate >= booking.startDateUtc) ||
-          (utcCheckInDate <= booking.startDateUtc && utcCheckOutDate >= booking.endDateUtc))
+        ((utcCheckInDateTime <= booking.endDateUtc && utcCheckInDateTime >= booking.startDateUtc) ||
+          (utcCheckOutDateTime <= booking.endDateUtc && utcCheckOutDateTime >= booking.startDateUtc) ||
+          (utcCheckInDateTime <= booking.startDateUtc && utcCheckOutDateTime >= booking.endDateUtc))
       ) {
         return false;
       }
@@ -78,7 +75,7 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
   };
 
   const handleNext = () => {
-    if (selectedRoom) {
+    if (room) {
       onNext();
     } else {
       setError(true);
@@ -88,16 +85,16 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
   return (
     <div className={styles.roomList}>
       <div className={styles.rooms}>
-        {rooms.map((room: RoomType) => (
+        {rooms.map((item: RoomType) => (
           <Room
-            key={room.id}
-            room={room}
-            perNightPrice={calculatePerNightPrice(room.pricePerNightNet, room.priceTaxPercentage)}
+            key={item.id}
+            room={item}
+            perNightPrice={calculatePerNightPrice(item.pricePerNightNet, room.priceTaxPercentage)}
             onSelect={handleRoomSelect}
-            isSelected={selectedRoom ? selectedRoom.id === room.id : false}
+            isSelected={room ? room.id === item.id : false}
             isAvailable={checkRoomAvailability(room.id)}
-            discountedPrice={handleDiscountedPrice(room)}
-            totalPrice={handleTotalPrice(room)}
+            discountedPrice={handleDiscountedPrice(item)}
+            totalPrice={handleTotalPrice(item)}
           />
         ))}
 

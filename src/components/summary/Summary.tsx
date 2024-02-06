@@ -11,7 +11,7 @@ const Summary: React.FC<SummaryProps> = ({data}) => {
   const {room, products, utcCheckInDateTime, utcCheckOutDateTime} = data;
 
   const calculateGrandTotal = () => {
-    const roomPrice = room?.discountedPrice ?? room?.totalPrice;
+    const roomPrice = room.discountedPrice === 0 ? room.totalPrice : room.discountedPrice;
     const totalProductPrices = products.reduce((accumulator: number, product: SelectedProduct) => {
       return accumulator + product.totalPrice;
     }, 0);

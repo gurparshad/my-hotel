@@ -16,7 +16,7 @@ import {calculateDiscountedPrice} from "../../../utils/calculateDiscountedPrice"
 import {calculateNumberOfNights} from "../../../utils/calculateNumberOfNights";
 import {calculatePerNightPrice} from "../../../utils/calculatePerNightPrice";
 import {calculateTotalPrice} from "../../../utils/calculateTotalPrice";
-import {SelectedProduct, SelectedRoom} from "../../../types";
+import {SelectedRoom} from "../../../types";
 import Button from "../../button/Button";
 import TimeDropdown from "../../timeDropdown/TimeDropdown";
 import {useState} from "react";
@@ -35,15 +35,9 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
   const [errors, setErrors] = useState<string[]>([]);
   const {startTimesLocal, endTimesLocal} = data.property;
 
-  const selectedRoom: SelectedRoom | null = useAppSelector((state: RootState) => state.form.form.formData.room);
-  const startDate = useAppSelector((state: RootState) => state.form.form.formData.startDate);
-  const endDate = useAppSelector((state: RootState) => state.form.form.formData.endDate);
-  const startTime = useAppSelector((state: RootState) => state.form.form.formData.startTime);
-  const endTime = useAppSelector((state: RootState) => state.form.form.formData.endTime);
+  const formData = useAppSelector((state: RootState) => state.form.form.formData);
+  const {room, startDate, endDate, startTime, endTime, products} = formData;
   const numberOfNights = calculateNumberOfNights(startDate, endDate);
-  const selectedProducts: SelectedProduct[] | [] = useAppSelector(
-    (state: RootState) => state.form.form.formData.products
-  );
 
   const breakfast = {
     id: 1,
@@ -60,7 +54,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
   const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
   const endDateFormatted = endDate ? (typeof endDate === "string" ? new Date(endDate) : endDate) : null;
 
-  const isBreakfastSelected = selectedProducts.some((product) => product.id === 1);
+  const isBreakfastSelected = products.some((product) => product.id === 1);
 
   if (!isBreakfastSelected && numberOfNights >= 28) {
     dispatch(addProduct(breakfast));
@@ -110,25 +104,17 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
     }
 
     if (startDate && endDate) {
-      if (selectedRoom) {
+      if (room) {
         const updatedRoom: SelectedRoom = {
-          ...selectedRoom,
-          discountedPrice: calculateDiscountedPrice(
-            numberOfNights,
-            selectedRoom.pricePerNight,
-            selectedRoom?.priceTaxPercentage
-          ),
+          ...room,
+          discountedPrice: calculateDiscountedPrice(numberOfNights, room.pricePerNight, room?.priceTaxPercentage),
           numberOfNights: numberOfNights,
-          totalPrice: calculateTotalPrice(
-            numberOfNights,
-            selectedRoom?.pricePerNight,
-            selectedRoom?.priceTaxPercentage
-          ),
+          totalPrice: calculateTotalPrice(numberOfNights, room?.pricePerNight, room?.priceTaxPercentage),
         };
         dispatch(updateRoom(updatedRoom));
       }
 
-      for (const selectedProduct of selectedProducts) {
+      for (const selectedProduct of products) {
         let updatedProduct;
         if (selectedProduct.id === 1 && numberOfNights >= 28) {
           updatedProduct = {
