@@ -48,10 +48,6 @@
     color: #666;
   }
 
-  .checkboxContainer {
-    margin-top: 10px;
-  }
-
   input[type="checkbox"] {
     cursor: pointer;
     transform: scale(1.5);
@@ -60,4 +56,17 @@
 
 .selectedProduct {
   background-color: #9ae4f3;
+}
+
+.details2 {
+  padding-top: 15px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.priceContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: justify;
 }

@@ -67,7 +67,7 @@ const ProductList: React.FC<ProductListProps> = ({onNext, onBack}) => {
           />
         ))}
       </div>
-      <div>
+      <div className={styles.buttonsContainer}>
         <Button onClick={onBack}>Back</Button>
         <Button onClick={onNext}>Next</Button>
       </div>

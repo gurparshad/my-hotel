@@ -33,8 +33,7 @@ interface DateAndTimeProps {
 const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
   const dispatch = useAppDispatch();
   const [errors, setErrors] = useState<string[]>([]);
-  const startTimesLocal = data.property.startTimesLocal;
-  const endTimesLocal = data.property.endTimesLocal;
+  const {startTimesLocal, endTimesLocal} = data.property;
 
   const selectedRoom: SelectedRoom | null = useAppSelector((state: RootState) => state.form.form.formData.room);
   const startDate = useAppSelector((state: RootState) => state.form.form.formData.startDate);
@@ -60,6 +59,12 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
   // TODO: put these methods as helper method for date formatting.
   const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
   const endDateFormatted = endDate ? (typeof endDate === "string" ? new Date(endDate) : endDate) : null;
+
+  const isBreakfastSelected = selectedProducts.some((product) => product.id === 1);
+
+  if (!isBreakfastSelected && numberOfNights >= 28) {
+    dispatch(addProduct(breakfast));
+  }
 
   const handleStartTime = (selectedTime: string) => {
     dispatch(setStartTime(selectedTime));
@@ -149,12 +154,6 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
           };
         }
         dispatch(updateProduct(updatedProduct));
-      }
-
-      const isBreakfastSelected = selectedProducts.some((product) => product.id === 1);
-
-      if (!isBreakfastSelected && numberOfNights >= 28) {
-        dispatch(addProduct(breakfast));
       }
 
       onNext();

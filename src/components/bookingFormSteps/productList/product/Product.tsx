@@ -22,19 +22,21 @@ const Product: React.FC<ProductProps> = ({product, isSelected, onCardClick, isFr
         <p className="name">{name}</p>
         <img src={product.image} alt="product" />
         {isFree ? (
-          <p>Free</p>
+          <p>Included for Free</p>
         ) : (
-          <div>
-            <p className={styles.price}>${calculatePerNightPrice(priceNet, priceTaxPercentage)}</p>
-            <p className={styles.chargeMethod}>Charge - {chargeMethod}</p>
+          <div className={styles.details2}>
+            <div className={styles.priceContainer}>
+              <p className={styles.price}>${calculatePerNightPrice(priceNet, priceTaxPercentage)}</p>
+              <p className={styles.chargeMethod}>Charge - {chargeMethod}</p>
+            </div>
+            {/* {!isFree && ( */}
+            <div>
+              <input type="checkbox" checked={isSelected} readOnly />
+            </div>
+            {/* )} */}
           </div>
         )}
       </div>
-      {!isFree && (
-        <div className={styles.checkboxContainer}>
-          <input type="checkbox" checked={isSelected} readOnly />
-        </div>
-      )}
     </div>
   );
 };

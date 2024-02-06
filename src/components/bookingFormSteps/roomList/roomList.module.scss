@@ -15,7 +15,9 @@
     position: relative;
 }
 
-.buttonContainer {
-  position: relative;
+.buttonsContainer{
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  padding-top: 40px;
 }
-

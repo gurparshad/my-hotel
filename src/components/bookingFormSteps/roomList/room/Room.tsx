@@ -40,15 +40,13 @@ const Room: React.FC<RoomProps> = ({
         <img src={room.image} alt="room" />
         <p className={styles.name}>{room.name}</p>
         <p className={styles.price}>${perNightPrice}/night</p>
-        <p className={totalPriceClass}>${totalPrice}</p>
-        {discountedPrice !== 0 && <p className={styles.price}>discounted price - ${discountedPrice}</p>}
+        <div className={styles.totalPrice}>
+          <p className={totalPriceClass}>${totalPrice}</p>
+          {discountedPrice !== 0 && <p className={styles.price}>${discountedPrice}</p>}
+          <p>Total</p>
+        </div>
         {!isAvailable && <p style={{color: "red"}}>Not avialable</p>}
       </div>
-      {isAvailable && (
-        <div className={styles.checkboxContainer}>
-          <input type="checkbox" checked={isSelected} readOnly />
-        </div>
-      )}
     </div>
   );
 };

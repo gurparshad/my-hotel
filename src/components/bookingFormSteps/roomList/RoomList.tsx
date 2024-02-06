@@ -77,7 +77,7 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
     dispatch(setRoom(roomData));
   };
 
-  const handleSubmit = () => {
+  const handleNext = () => {
     if (selectedRoom) {
       onNext();
     } else {
@@ -103,9 +103,9 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
 
         {error && <Error customClass={styles.roomError} message="Please select a room" />}
       </div>
-      <div className={styles.buttonContainer}>
+      <div className={styles.buttonsContainer}>
         <Button onClick={onBack}>Back</Button>
-        <Button onClick={handleSubmit}>Next</Button>
+        <Button onClick={handleNext}>Next</Button>
       </div>
     </div>
   );

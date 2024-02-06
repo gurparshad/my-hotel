@@ -45,6 +45,12 @@
 
   .checkboxContainer {
     margin-top: 10px;
+    display: none;
+  }
+
+  .totalPrice {
+    display: flex;
+    gap: 10px;
   }
 }
 
