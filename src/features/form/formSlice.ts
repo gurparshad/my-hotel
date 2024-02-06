@@ -2,8 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ProductType, SelectedProduct, SelectedRoom } from '../../types';
 
 interface FormData {
-  startDate: Date | null;
-  endDate: Date | null;
+  startDate: string;
+  endDate: string;
   startTime: string;
   endTime: string;
   room: SelectedRoom;
@@ -20,8 +20,8 @@ interface FormState {
 const initialState: FormState = {
   currentStep: 1,
   formData: {
-    startDate: null,
-    endDate: null,
+    startDate: '',
+    endDate: '',
     startTime: '',
     endTime: '',
     utcCheckInDateTime: '',
@@ -47,10 +47,10 @@ const formSlice = createSlice({
     setCurrentStep: (state: FormState, action: PayloadAction<number>) => {
       state.currentStep = action.payload;
     },
-    setStartDate: (state: FormState, action: PayloadAction<Date | null>) => {
+    setStartDate: (state: FormState, action: PayloadAction<string>) => {
       state.formData.startDate = action.payload;
     },
-    setEndDate: (state: FormState, action: PayloadAction<Date | null>) => {
+    setEndDate: (state: FormState, action: PayloadAction<string>) => {
       state.formData.endDate = action.payload;
     },
     setStartTime: (state: FormState, action: PayloadAction<string>) => {

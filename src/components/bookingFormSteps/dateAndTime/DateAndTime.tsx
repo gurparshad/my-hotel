@@ -37,6 +37,8 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
 
   const formData = useAppSelector((state: RootState) => state.form.form.formData);
   const {room, startDate, endDate, startTime, endTime, products} = formData;
+  const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
+  const endDateFormatted = endDate ? (typeof endDate === "string" ? new Date(endDate) : endDate) : null;
   const numberOfNights = calculateNumberOfNights(startDate, endDate);
 
   const breakfast = {
@@ -49,10 +51,6 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
     numberOfNights: numberOfNights,
     totalPrice: 0,
   };
-
-  // TODO: put these methods as helper method for date formatting.
-  const startDateFormatted = startDate ? (typeof startDate === "string" ? new Date(startDate) : startDate) : null;
-  const endDateFormatted = endDate ? (typeof endDate === "string" ? new Date(endDate) : endDate) : null;
 
   const isBreakfastSelected = products.some((product) => product.id === 1);
 
@@ -70,13 +68,13 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({onNext}) => {
 
   const handleStartDateChange = (date: Date) => {
     if (endDateFormatted && date > endDateFormatted) {
-      dispatch(setEndDate(null));
+      dispatch(setEndDate(""));
     }
-    dispatch(setStartDate(date));
+    dispatch(setStartDate(date.toISOString()));
   };
 
   const handleEndDateChange = (date: Date) => {
-    dispatch(setEndDate(date));
+    dispatch(setEndDate(date.toISOString()));
   };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

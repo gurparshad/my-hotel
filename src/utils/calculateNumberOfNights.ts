@@ -1,4 +1,4 @@
-export const calculateNumberOfNights = (startDate: Date | null, endDate: Date | null): number => {
+export const calculateNumberOfNights = (startDate: string, endDate: string): number => {
   if (!startDate || !endDate) {
     return 0;
   }
