@@ -89,7 +89,7 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
           <Room
             key={item.id}
             room={item}
-            perNightPrice={calculatePerNightPrice(item.pricePerNightNet, room.priceTaxPercentage)}
+            perNightPrice={calculatePerNightPrice(item.pricePerNightNet, item.priceTaxPercentage)}
             onSelect={handleRoomSelect}
             isSelected={room ? room.id === item.id : false}
             isAvailable={checkRoomAvailability(room.id)}
