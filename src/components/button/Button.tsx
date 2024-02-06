@@ -3,7 +3,7 @@ import styles from './button.module.scss';
 import classnames from 'classnames';
 
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
-  onClick: (event: any) => void;
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void;
   customClass?: string;
   type?: 'button' | 'submit' | 'reset' | undefined;
 }

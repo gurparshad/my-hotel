@@ -111,14 +111,15 @@ const RoomList: React.FC<RoomListProps> = ({ onNext, onBack }) => {
             totalPrice={handleTotalPrice(item)}
           />
         ))}
-
-        {error && (
+      </div>
+      {error && (
+        <div className={styles.errorContainer}>
           <Error
             customClass={styles.roomError}
             message="Please select a room"
           />
-        )}
-      </div>
+        </div>
+      )}
       <div className={styles.buttonsContainer}>
         <Button onClick={onBack}>Back</Button>
         <Button onClick={handleNext}>Next</Button>

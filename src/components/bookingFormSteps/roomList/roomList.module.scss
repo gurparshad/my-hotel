@@ -12,15 +12,17 @@
   position: relative;
 }
 
-.roomError {
-  top: 272px;
-}
-
 .buttonsContainer {
   display: flex;
   gap: 30px;
   justify-content: center;
-  padding-top: 40px;
+  margin-top: 60px;
+}
+
+.errorContainer{
+  position: relative;
+  display: flex;
+  justify-content: center;
 }
 
 @media (max-width: 768px) {

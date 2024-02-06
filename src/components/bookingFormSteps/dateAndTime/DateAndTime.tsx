@@ -87,7 +87,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({ onNext }) => {
     dispatch(setEndDate(date.toISOString()));
   };
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleNext = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const newErrors: string[] = [];
 
@@ -168,9 +168,11 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({ onNext }) => {
   return (
     <div className={styles.dateAndTime}>
       <h2>Select the Booking date and time</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleNext}>
         <div className={styles.checkInContainer}>
-          <label>Check In</label>
+          <div className={styles.labelContainer}>
+            <label>Check In</label>
+          </div>
           <div className={styles.datePickerContainer}>
             <DatePicker
               selected={startDateFormatted}
@@ -199,7 +201,9 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({ onNext }) => {
         </div>
 
         <div className={styles.checkOutContainer}>
-          <label>Check Out</label>
+          <div className={styles.labelContainer}>
+            <label>Check Out</label>
+          </div>
           <div className={styles.datePickerContainer}>
             <DatePicker
               selected={endDateFormatted}
@@ -232,11 +236,7 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({ onNext }) => {
             <Error message="Booking is possible for minimum 1 night" />
           </div>
         )}
-        <Button
-          onClick={handleSubmit}
-          type="submit"
-          customClass={styles.button}
-        >
+        <Button type="submit" customClass={styles.button}>
           Next
         </Button>
       </form>

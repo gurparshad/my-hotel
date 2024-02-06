@@ -36,15 +36,22 @@
 }
 
 .datePicker {
-  width: 200px;
+  width: 250px;
   border-radius: 4px;
   height: 30px;
   border: 1px solid #ccc;
+  padding: 10px;
+  cursor: pointer;
 }
 
 .react-datepicker__tab-loop {
   position: absolute;
   top: 0;
+}
+
+.labelContainer{
+  width: 100px;
+  text-align: left;
 }
 
 .errorContainer {
@@ -58,20 +65,18 @@
 }
 
 .button {
-  margin-top: 60px;
+  margin-top: 80px;
 }
 
 @media (max-width: 768px) {
-  .dateAndTime {
-    text-align: center;
-  }
-  .checkInContainer {
-    display: flex;
+  .checkInContainer,
+  .checkOutContainer {
     flex-direction: column;
+    align-items: center;
+  }
+  
+  .checkInContainer{
+    margin-bottom: 20px;
   }
 
-  .checkOutContainer {
-    display: flex;
-    flex-direction: column;
-  }
 }
