@@ -8,10 +8,10 @@
 
 ## Commands
 
-"npm run start" to run the project
-"npm run build" to build the project
-"npm run format" prettier will format the code
-"npm run lint" for linting, it will show the error or warning if any
+- "npm run start" to run the project
+- "npm run build" to build the project
+- "npm run format" prettier will format the code
+- "npm run lint" for linting, it will show the error or warning if any
 
 ## Tech stack
 
@@ -19,8 +19,8 @@
 - HTML
 - SCSS
 - Typescript
-- Redux toolkit
-- Redux persist
+- Redux toolkit (state management)
+- Redux persist (persistence)
 - react router
 - pre commit
 - react datepicker
