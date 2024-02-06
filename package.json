@@ -25,10 +25,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run lint && react-scripts start",
     "build": "react-scripts build",
     "pre-commit-msg": "echo 'Formatting the code ...' && exit 0",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "lint": "eslint \"src/**/*.{ts,tsx}\" --fix"
   },
   "pre-commit": [
     "pre-commit-msg",
@@ -54,6 +55,10 @@
   },
   "devDependencies": {
     "@types/react-datepicker": "^4.19.5",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react": "^7.33.2",
     "pre-commit": "^1.2.2",
     "prettier": "^3.2.5"
   }

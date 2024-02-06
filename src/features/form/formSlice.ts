@@ -104,7 +104,7 @@ const formSlice = createSlice({
         state.formData.room = { ...state.formData.room, ...action.payload };
       }
     },
-    resetForm: (state: FormState) => {
+    resetForm: () => {
       return initialState;
     },
   },

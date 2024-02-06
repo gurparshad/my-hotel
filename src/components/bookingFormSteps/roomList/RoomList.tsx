@@ -23,13 +23,13 @@ interface RoomListProps {
 
 const RoomList: React.FC<RoomListProps> = ({ onNext, onBack }) => {
   const dispatch = useAppDispatch();
-  const [error, setError] = useState<Boolean>(false);
+  const [error, setError] = useState<boolean>(false);
   const { room, startDate, endDate, utcCheckInDateTime, utcCheckOutDateTime } =
     useAppSelector((state: RootState) => state.form.form.formData);
 
   let discountedPrice = 0;
   let totalPrice = 0;
-  let numberOfNights = calculateNumberOfNights(startDate, endDate);
+  const numberOfNights = calculateNumberOfNights(startDate, endDate);
 
   const checkRoomAvailability = (roomId: number) => {
     for (const booking of bookings) {

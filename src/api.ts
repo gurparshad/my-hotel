@@ -8,7 +8,7 @@ export class MyHotelApi {
     SUBMIT_BOOKING: '',
   };
 
-  private handleRequest = async (request: Promise<AxiosResponse<any>>) =>
+  private handleRequest = async (request: Promise<AxiosResponse<unknown>>) =>
     request.then(this.handleResult).catch(this.handleError);
 
   private handleError(err: AxiosError) {
