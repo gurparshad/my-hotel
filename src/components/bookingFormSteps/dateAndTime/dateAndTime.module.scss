@@ -60,3 +60,18 @@
 .button {
   margin-top: 60px;
 }
+
+@media (max-width: 768px) {
+  .dateAndTime {
+    text-align: center;
+  }
+  .checkInContainer {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .checkOutContainer {
+    display: flex;
+    flex-direction: column;
+  }
+}

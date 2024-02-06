@@ -26,8 +26,14 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "pre-commit-msg": "echo 'Formatting the code ...' && exit 0",
+    "format": "prettier --write ."
   },
+  "pre-commit": [
+    "pre-commit-msg",
+    "format"
+  ],
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -48,6 +54,7 @@
   },
   "devDependencies": {
     "@types/react-datepicker": "^4.19.5",
+    "pre-commit": "^1.2.2",
     "prettier": "^3.2.5"
   }
 }

@@ -41,6 +41,7 @@ const CreateBooking: React.FC<CreateBookingProps> = ({ onBack }) => {
 
   return (
     <div className={styles.createBooking}>
+      <h2>Check Details</h2>
       <Summary data={data} />
       <div className={styles.buttonsContainer}>
         <Button onClick={onBack}>Back</Button>
