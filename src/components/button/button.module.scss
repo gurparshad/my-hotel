@@ -13,15 +13,6 @@
   transition: background-color 0.3s, color 0.3s;
   height: 45px;
 
-  &.disconnect {
-    color: #e74c3c;
-    border-color: #e74c3c;
-    &:hover {
-      background-color: #e74c3c;
-      color: #fff;
-    }
-  }
-
   &:hover {
     background-color: #007bff;
     color: #fff;

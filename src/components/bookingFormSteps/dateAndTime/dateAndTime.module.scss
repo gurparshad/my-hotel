@@ -48,6 +48,17 @@
   top: 0;
 }
 
+.errorContainer{
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
 .bookingError {
-  top: 185px;
+  position: absolute;
+}
+
+.button{
+  margin-top: 50px;
 }
