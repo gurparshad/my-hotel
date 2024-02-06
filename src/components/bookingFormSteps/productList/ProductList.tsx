@@ -55,6 +55,7 @@ const ProductList: React.FC<ProductListProps> = ({onNext, onBack}) => {
 
   return (
     <div className={styles.productList}>
+      <h2>Select the Products</h2>
       <div className={styles.products}>
         {products.map((product: ProductType) => (
           <Product

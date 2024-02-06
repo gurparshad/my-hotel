@@ -75,7 +75,7 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
   };
 
   const handleNext = () => {
-    if (room) {
+    if (room.id > 0) {
       onNext();
     } else {
       setError(true);
@@ -84,6 +84,7 @@ const RoomList: React.FC<RoomListProps> = ({onNext, onBack}) => {
 
   return (
     <div className={styles.roomList}>
+      <h2>Select a Room</h2>
       <div className={styles.rooms}>
         {rooms.map((item: RoomType) => (
           <Room
