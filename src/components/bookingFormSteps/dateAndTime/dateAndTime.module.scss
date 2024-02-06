@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 .dateAndTime {
   display: flex;
   flex-direction: column;
@@ -68,7 +70,7 @@
   margin-top: 80px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md) {
   .checkInContainer,
   .checkOutContainer {
     flex-direction: column;

@@ -1,3 +1,5 @@
+@import '../../../styles/variables';
+
 .productList {
   display: flex;
   flex-direction: column;
@@ -18,7 +20,7 @@
   padding-top: 40px;
 }
 
-@media (max-width: 768px) {
+@media (max-width: $breakpoint-md) {
   .products {
     flex-direction: column;
     gap: 30px;
