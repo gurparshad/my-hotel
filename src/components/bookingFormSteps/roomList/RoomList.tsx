@@ -21,6 +21,7 @@ interface RoomListProps {
   onBack: () => void;
 }
 
+// TODO: dates need to be parsed before comparison.
 export const checkRoomAvailability = (
   roomId: number,
   utcCheckInDateTime: string,
