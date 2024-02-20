@@ -27,3 +27,7 @@
 - axios
 - prettier
 - eslint
+
+## Improvements
+
+A potential improvement could be to use the immer library for updating nested state more concisely. This library, integrated into Redux Toolkit, allows you to write code that "mutates" state in a more natural way.
