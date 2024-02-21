@@ -30,6 +30,10 @@ const CreateBooking: React.FC<CreateBookingProps> = ({ onBack }) => {
   const handleSubmit = async () => {
     try {
       const response = await myHotelApi.submitBooking(data);
+      // but in ideal scenerio. this data should not be stored in the local or session storage, due to security reasons.
+      // there are few options.
+      // 1. dont send the detials directly send the email to the user.
+      // 2. return the booking ID that can be stored and used to get the booking details. // can be stored in teh cookies.
       localStorage.setItem('bookingData', JSON.stringify(response));
       dispatch(resetForm());
       navigate('/success');
