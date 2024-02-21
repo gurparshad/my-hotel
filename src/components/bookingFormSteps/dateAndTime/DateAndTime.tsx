@@ -40,11 +40,13 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({ onNext }) => {
     (state: RootState) => state.form.form.formData,
   );
   const { room, startDate, endDate, startTime, endTime, products } = formData;
-  const startDateFormatted = startDate
-    ? typeof startDate === 'string'
-      ? new Date(startDate)
-      : startDate
-    : null;
+
+  // TODO: earlier it was done because in the redux store we were storing the Date type value,
+  // but that should not be done. it must contain the strong value. // so this code can be refactored as
+  // from both session storage and redux store the value that will come will be the string
+
+  // TODO: the endDateFormatted one can also be refactored.
+  const startDateFormatted = startDate ? new Date(startDate) : null;
   const endDateFormatted = endDate
     ? typeof endDate === 'string'
       ? new Date(endDate)
