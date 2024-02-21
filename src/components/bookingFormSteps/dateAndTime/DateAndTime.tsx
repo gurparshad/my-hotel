@@ -172,6 +172,8 @@ const DateAndTime: React.FC<DateAndTimeProps> = ({ onNext }) => {
 
     const utcCheckInDate = toUtcFormat(startDate, startTime);
     const utcCheckOutDate = toUtcFormat(endDate, endTime);
+    // we are using another utc variables because dates are to becompared in the next stages are in the UTC and also they are stored in teh UTC.
+    // so its easy and less cumbersome this way. // then converting them again and agin at each stage.
     dispatch(setUtcCheckInDateTime(utcCheckInDate));
     dispatch(setUtcCheckOutDateTime(utcCheckOutDate));
 
